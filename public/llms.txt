@@ -1,57 +1,47 @@
-#  גרמי הנדסה — Generative Engine Optimization Map
-
-> A הנדסה ובנייה business.
+# Business — Generative Engine Optimization Map
 
 ---
 
 ## Pages
 
 ### בית
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com
+https://germi-handasa.zappy5.app
 גרמי מציעה שירותי הנדסה ובנייה ברמה הגבוהה ביותר. מהנדסי ניהול פרויקטים בנייה מומחים לתכנון ורישוי פרויקטים. צור קשר עוד היום!
 
 ### שירותים
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com/services
+https://germi-handasa.zappy5.app/services
 גלה את מגוון שירותי ההנדסה והבנייה של גרמי: תכנון ורישוי פרויקטים, ניהול פרויקטים בנייה, הנדסה אזרחית ועוד. פתרונות מקצועיים ליזמים תובעניים.
 
 ### אודות
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com/about
+https://germi-handasa.zappy5.app/about
 הכר את גרמי - חברת הנדסה ובנייה המובילה בישראל. למד על הצוות המקצועי, הערכים שלנו, והמחויבות שלנו למצוינות בכל פרויקט.
 
 ### צור קשר
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com/contact
+https://germi-handasa.zappy5.app/contact
 צור קשר עם גרמי לקבלת ייעוץ מקצועי בתחום ההנדסה והבנייה. מהנדס ניהול פרויקטים בנייה ושירותי תכנון ורישוי פרויקטים. נשמח לעזור לך!
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com/privacy
+https://germi-handasa.zappy5.app/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com/terms
+https://germi-handasa.zappy5.app/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://zappy-site-5dade139-757e-4a58-8012.onrender.com/accessibility
+https://germi-handasa.zappy5.app/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
 
 # Business Context (for LLM understanding)
 
-## About  גרמי הנדסה
- גרמי הנדסה is a business in the הנדסה ובנייה industry.
-
-## Target Audience
-יזמים שאינם מתפשרים
-
-## Industry
-הנדסה ובנייה
-
+## About Business
 ---
 
 # Additional Resources
 
-- **Sitemap**: https://zappy-site-5dade139-757e-4a58-8012.onrender.com/sitemap.xml
-- **Robots.txt**: https://zappy-site-5dade139-757e-4a58-8012.onrender.com/robots.txt
+- **Sitemap**: https://germi-handasa.zappy5.app/sitemap.xml
+- **Robots.txt**: https://germi-handasa.zappy5.app/robots.txt
