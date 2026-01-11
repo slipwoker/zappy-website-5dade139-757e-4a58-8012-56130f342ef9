@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://zappy-site-5dade139-757e-4a58-8012.onrender.com/sitemap.xml
+Sitemap: https://germi-handasa.zappy5.app/sitemap.xml
