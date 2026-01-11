@@ -1,47 +1,57 @@
-# Business — Generative Engine Optimization Map
+#  גרמי הנדסה — Generative Engine Optimization Map
+
+> A הנדסה ובנייה business.
 
 ---
 
 ## Pages
 
 ### בית
-https://example.com
+https://germi-handasa.zappy5.app
 גרמי מציעה שירותי הנדסה ובנייה ברמה הגבוהה ביותר. מהנדסי ניהול פרויקטים בנייה מומחים לתכנון ורישוי פרויקטים. צור קשר עוד היום!
 
 ### שירותים
-https://example.com/services
+https://germi-handasa.zappy5.app/services
 גלה את מגוון שירותי ההנדסה והבנייה של גרמי: תכנון ורישוי פרויקטים, ניהול פרויקטים בנייה, הנדסה אזרחית ועוד. פתרונות מקצועיים ליזמים תובעניים.
 
 ### אודות
-https://example.com/about
+https://germi-handasa.zappy5.app/about
 הכר את גרמי - חברת הנדסה ובנייה המובילה בישראל. למד על הצוות המקצועי, הערכים שלנו, והמחויבות שלנו למצוינות בכל פרויקט.
 
 ### צור קשר
-https://example.com/contact
+https://germi-handasa.zappy5.app/contact
 צור קשר עם גרמי לקבלת ייעוץ מקצועי בתחום ההנדסה והבנייה. מהנדס ניהול פרויקטים בנייה ושירותי תכנון ורישוי פרויקטים. נשמח לעזור לך!
 
 ## Legal & Policy
 
 ### Privacy Policy
-https://example.com/privacy
+https://germi-handasa.zappy5.app/privacy
 Information about how user data is collected, stored, and protected.
 
 ### Terms & Conditions
-https://example.com/terms
+https://germi-handasa.zappy5.app/terms
 Legal terms describing service usage, rights, and policies.
 
 ### Accessibility Statement
-https://example.com/accessibility
+https://germi-handasa.zappy5.app/accessibility
 Information about WCAG compliance and accessibility features.
 
 ---
 
 # Business Context (for LLM understanding)
 
-## About Business
+## About  גרמי הנדסה
+ גרמי הנדסה is a business in the הנדסה ובנייה industry.
+
+## Target Audience
+יזמים שאינם מתפשרים
+
+## Industry
+הנדסה ובנייה
+
 ---
 
 # Additional Resources
 
-- **Sitemap**: https://example.com/sitemap.xml
-- **Robots.txt**: https://example.com/robots.txt
+- **Sitemap**: https://germi-handasa.zappy5.app/sitemap.xml
+- **Robots.txt**: https://germi-handasa.zappy5.app/robots.txt
