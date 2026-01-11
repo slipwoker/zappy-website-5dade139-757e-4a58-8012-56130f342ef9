@@ -700,7 +700,7 @@
 <img data-placeholder="service-6" data-context="Project manager with hard hat using digital tablet to coordinate construction team and review building progress on large commercial site" src="/assets/service-service-6.webp" alt="מנהל פרויקט מתאם עבודות בנייה באתר מסחרי">
 <h2>ניהול הפרויקט&nbsp;</h2>
 <p>מהנדס ניהול הפרויקט&nbsp; מנוסה מלווה את הפרויקט שלך מתחילתו ועד יום הביצוע בפועל. אנחנו אחראים על כל היבטי הפרויקט - תכנון לוחות זמנים, ניהול תקציב, תיאום יועצים וספקים. הכנת השטח - העתקת תשתיות ותיאום הנדסי לכניסה לעבודה ללא הפרעות או עיקובים.קבלנים וספקים, בקרת איכות, וטיפול בכל הבעיות שעולות במהלך הביצוע. ה&nbsp; הכנת השטח - העתקת תשתיות ותיאום הנדסי לכניסה לעבודה ללא הפרעות או עיקובים&nbsp;&nbsp;ת שלנו כולל ניהול יומיומי של אתר הבנייה, דיווחים שוטפים ללקוח, וודא שהעבודה מתבצעת בהתאם לתוכניות ולסטנדרטים הנדרשים. אנחנו משתמשים בכלי ניהול פרויקטים מתקדמים שמאפשרים מעקב בזמן אמת ושקיפות מלאה.</p>
-<ul class="service-features zappy-vertical-grid" style="grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr) !important;"></ul>
+<ul class="service-features zappy-vertical-grid" style="grid-template-columns: minmax(0px, 1fr) minmax(0px, 1fr) ;"></ul>
 
     </div>
   </div>
@@ -822,14 +822,14 @@
         var header = document.getElementById('zappy-attribution-header');
         if (header) {
           // Use dynamic announcement content if available
-          if (data.announcement &amp;&amp; data.announcement.html) {
+          if (data.announcement && data.announcement.html) {
             header.innerHTML = data.announcement.html;
           }
           // Apply fixed positioning styles inline (works for existing sites too)
           header.style.cssText = 'position: fixed !important; top: 0 !important; left: 0 !important; right: 0 !important; width: 100% !important; z-index: 99999 !important; display: flex !important; justify-content: center !important; align-items: center !important; text-align: center !important; box-sizing: border-box !important;';
           // Fix child elements that might have position: fixed from old CSS
           var children = header.querySelectorAll('*');
-          for (var i = 0; i &lt; children.length; i++) {
+          for (var i = 0; i < children.length; i++) {
             children[i].style.position = 'static';
           }
           // Get header height
@@ -837,9 +837,9 @@
           // Find and fix navbar to be fixed as well (prevents gap at top of page)
           var navSelectors = ['nav', '.navbar', '.nav'];
           var navbar = null;
-          for (var j = 0; j &lt; navSelectors.length; j++) {
+          for (var j = 0; j < navSelectors.length; j++) {
             navbar = document.querySelector(navSelectors[j]);
-            if (navbar &amp;&amp; navbar.id !== 'zappy-attribution-header') break;
+            if (navbar && navbar.id !== 'zappy-attribution-header') break;
             navbar = null;
           }
           if (navbar) {
