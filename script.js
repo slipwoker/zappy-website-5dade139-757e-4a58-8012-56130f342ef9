@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
   
   if (phoneHeaderBtn) {
     phoneHeaderBtn.addEventListener('click', function() {
-      const phoneNumber = '+972501234567';
+      const phoneNumber = '0549275258';
       window.location.href = 'tel:' + phoneNumber;
     });
   }
