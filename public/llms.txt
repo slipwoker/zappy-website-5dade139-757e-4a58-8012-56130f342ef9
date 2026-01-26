@@ -1,4 +1,6 @@
-# Business — Generative Engine Optimization Map
+#  גרמי הנדסה — Generative Engine Optimization Map
+
+> A הנדסה ובנייה business.
 
 ---
 
@@ -38,7 +40,15 @@ Information about WCAG compliance and accessibility features.
 
 # Business Context (for LLM understanding)
 
-## About Business
+## About  גרמי הנדסה
+ גרמי הנדסה is a business in the הנדסה ובנייה industry.
+
+## Target Audience
+יזמים שאינם מתפשרים
+
+## Industry
+הנדסה ובנייה
+
 ---
 
 # Additional Resources
