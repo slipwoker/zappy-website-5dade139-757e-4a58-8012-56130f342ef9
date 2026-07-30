@@ -1,4 +1,6 @@
-# Business — Generative Engine Optimization Map
+#  גרמי הנדסה — Generative Engine Optimization Map
+
+> A הנדסה ובנייה business.
 
 ---
 
@@ -36,12 +38,43 @@ Information about WCAG compliance and accessibility features.
 
 ---
 
-# Business Context (for LLM understanding)
+## How to Contact Us
 
-## About Business
+- Email: guy@gremi-eng.co.il
+- Phone: 054-9275258
+- Phone (tel): tel:0549275258
+- Address: התעשיה 15, רעננה
+
+### Contact form
+- URL: https://gremi-eng.co.il/contact
+- Endpoint: https://gremi-eng.co.il/api/email/contact-form
+- Method: POST
+- Content-Type: application/json
+- Fields:
+  - `name` (text, required)
+  - `email` (email, required)
+  - `phone` (tel, required)
+  - `subject` (select)
+  - `message` (textarea)
+  - `consent` (checkbox, required)
+
 ---
 
-# Additional Resources
+# Business Context (for LLM understanding)
 
-- **Sitemap**: https://gremi-eng.co.il/sitemap.xml
-- **Robots.txt**: https://gremi-eng.co.il/robots.txt
+## About  גרמי הנדסה
+ גרמי הנדסה is a business in the הנדסה ובנייה industry.
+
+## Target Audience
+יזמים שאינם מתפשרים
+
+## Industry
+הנדסה ובנייה
+
+---
+
+# Machine-readable feeds
+
+- Sitemap (XML): https://gremi-eng.co.il/sitemap.xml
+- Robots: https://gremi-eng.co.il/robots.txt
+- Flattened page text (for LLMs): https://gremi-eng.co.il/llms-full.txt

@@ -1,11 +1,11 @@
 <!DOCTYPE html><html lang="he" dir="rtl"><head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>הנדסה עם אימפקט — גרמי</title>
-<meta name="description" content="גרמי מציעה שירותי הנדסה ובנייה ברמה הגבוהה ביותר. מהנדסי ניהול פרויקטים בנייה מומחים לתכנון ורישוי פרויקטים. צור קשר עוד היום!">
-<meta name="keywords" content=" גרמי הנדסה, רישוי, מהנדס מגה פרויקט - מנהל תכנון למכרז BOT בירושלים, מנהל הפרויקט - יד חרוצים נתניה">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="index, follow">
+    <title>הנדסה עם אימפקט — גרמי</title>
+    <meta name="description" content="גרמי מציעה שירותי הנדסה ובנייה ברמה הגבוהה ביותר. מהנדסי ניהול פרויקטים בנייה מומחים לתכנון ורישוי פרויקטים. צור קשר עוד היום!">
+    <meta name="keywords" content="גרמי, רישוי, מהנדס ניהול פרויקטים בנייה, תכנון ורישוי פרויקטים, הנדסה ובנייה">
+    
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
@@ -14,59 +14,7 @@
     <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
     <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
     <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-<style>
-/* Zappy Attribution Header Styles */
-.zappy-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  background: white;
-  box-shadow: 0px 4px 19px 0px rgba(0,0,0,0.04);
-  padding: 16px 10px;
-  text-align: center;
-  font-family: 'Nunito', sans-serif;
-  font-size: 16px;
-  color: #4a4a4a;
-  line-height: 21px;
-  z-index: 99999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 21px;
-  direction: ltr !important;
-  unicode-bidi: isolate;
-}
-
-    .zappy-header p {
-      margin: 0;
-      padding: 0;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 21px;
-      white-space: nowrap;
-      display: inline-block;
-      vertical-align: baseline;
-      margin-bottom: 0 !important;
-      direction: ltr !important;
-    }
-
-.zappy-header .zappy-link {
-  font-weight: 700;
-  color: #4a4a4a;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.zappy-header .zappy-link:hover {
-  opacity: 0.7;
-}</style>
-    <!-- Cookie Consent -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
-    <script src="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.umd.js"></script>
-    <!-- Mickidum Accessibility Toolbar -->
-    <script src="https://cdn.jsdelivr.net/gh/mickidum/acc_toolbar/acctoolbar/acctoolbar.min.js"></script>
-<!-- Zappy Analytics -->
+    <!-- Zappy Analytics -->
 <script>
 (function() {
   'use strict';
@@ -211,26 +159,31 @@
       // Track button clicks (counted as actions)
       if (target.tagName === 'BUTTON' || target.closest('button')) {
         var button = target.tagName === 'BUTTON' ? target : target.closest('button');
-        trackEvent('click', {
+        var clickMeta = {
           element: 'button',
           text: button.textContent.trim().substring(0, 100),
           id: button.id || null,
           class: button.className || null
-        });
+        };
+        
+        trackEvent('click', clickMeta);
       }
       
       // Track link clicks (navigation - not counted as actions)
       else if (target.tagName === 'A' || target.closest('a')) {
         var link = target.tagName === 'A' ? target : target.closest('a');
-        trackEvent('navigation', {
+        var navMeta = {
           element: 'link',
           text: link.textContent.trim().substring(0, 100),
           href: link.href,
           external: link.hostname !== window.location.hostname
-        });
+        };
+        
+        trackEvent('navigation', navMeta);
       }
     }, true);
   }
+  
   
   // Track form submissions
   if (config.trackFormSubmissions) {
@@ -268,23 +221,516 @@
 })();
 </script>
 <!-- End Zappy Analytics -->
+<!-- Zappy Marketing Events -->
+<script>
+(function() {
+  'use strict';
+  if (window.zappyFireMarketingEvent) return;
+
+  var ECOM_MODE = "";
+  var IS_CATALOG = false;
+  var IS_FULL = false;
+
+  var ECOM_ALIAS = {
+    begin_checkout: 'checkout_started',
+    purchase: 'checkout_complete',
+    add_to_cart: 'add_to_cart',
+    view_product: 'view_product'
+  };
+
+  function pagePath() {
+    try {
+      if (window.ZAPPY_CONFIG && window.ZAPPY_CONFIG.currentPagePath) {
+        return window.ZAPPY_CONFIG.currentPagePath;
+      }
+    } catch (e) {}
+    try { return window.location.pathname || '/'; } catch (e2) { return '/'; }
+  }
+
+  function normalizeItems(meta) {
+    meta = meta || {};
+    var raw = meta.items || meta.cartItems || meta.cart_items || meta.lineItems || [];
+    if (!Array.isArray(raw)) raw = [];
+    var out = [];
+    for (var i = 0; i < raw.length; i++) {
+      var item = raw[i];
+      if (!item || typeof item !== 'object') continue;
+      var id = String(item.item_id || item.productId || item.product_id || item.id || '').trim();
+      var name = String(item.item_name || item.productName || item.product_name || item.name || '').trim();
+      var price = parseFloat(item.price != null ? item.price : (item.unitPrice != null ? item.unitPrice : 0)) || 0;
+      var quantity = Math.max(1, parseInt(item.quantity != null ? item.quantity : (item.qty != null ? item.qty : 1), 10) || 1);
+      if (!id && !name) continue;
+      out.push({ item_id: id || name, item_name: name || id, price: price, quantity: quantity });
+    }
+    return out;
+  }
+
+  function buildGa4Params(eventId, meta) {
+    meta = meta || {};
+    var items = normalizeItems(meta);
+    var value = parseFloat(meta.value != null ? meta.value : (meta.total != null ? meta.total : 0)) || 0;
+    var currency = String(meta.currency || 'USD').toUpperCase();
+
+    if (eventId === 'checkout_complete') {
+      return {
+        transaction_id: String(meta.transaction_id || meta.orderId || meta.order_id || meta.orderNumber || '') || undefined,
+        value: value,
+        currency: currency,
+        items: items
+      };
+    }
+    if (eventId === 'checkout_started') {
+      return { value: value, currency: currency, items: items };
+    }
+    if (eventId === 'add_to_cart') {
+      var atcItems = items.length ? items : [{
+        item_id: String(meta.productId || meta.product_id || ''),
+        item_name: String(meta.productName || meta.product_name || ''),
+        price: parseFloat(meta.value != null ? meta.value : (meta.price != null ? meta.price : 0)) || 0,
+        quantity: parseInt(meta.quantity != null ? meta.quantity : 1, 10) || 1
+      }].filter(function(x) { return x.item_id || x.item_name; });
+      return {
+        value: value || (atcItems[0] ? atcItems[0].price * atcItems[0].quantity : 0),
+        currency: currency,
+        items: atcItems
+      };
+    }
+    if (eventId === 'view_product') {
+      var vpItems = items.length ? items : [{
+        item_id: String(meta.productId || meta.product_id || ''),
+        item_name: String(meta.productName || meta.product_name || ''),
+        price: parseFloat(meta.price != null ? meta.price : (meta.value != null ? meta.value : 0)) || 0,
+        quantity: 1
+      }].filter(function(x) { return x.item_id || x.item_name; });
+      return {
+        currency: currency,
+        value: value || (vpItems[0] ? vpItems[0].price : 0),
+        items: vpItems
+      };
+    }
+    if (eventId === 'whatsapp_click' || eventId === 'phone_click') {
+      return { method: eventId === 'whatsapp_click' ? 'whatsapp' : 'phone', page_path: meta.pagePath || pagePath() };
+    }
+    if (eventId === 'contact_form_submitted' || eventId === 'product_inquiry') {
+      return { page_path: meta.pagePath || pagePath() };
+    }
+    return meta;
+  }
+
+  function buildMetaParams(eventId, meta) {
+    meta = meta || {};
+    var items = normalizeItems(meta);
+    var value = parseFloat(meta.value != null ? meta.value : (meta.total != null ? meta.total : 0)) || 0;
+    var currency = String(meta.currency || 'USD').toUpperCase();
+    var contentIds = [];
+    var numItems = 0;
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].item_id) contentIds.push(items[i].item_id);
+      numItems += items[i].quantity || 1;
+    }
+
+    if (eventId === 'checkout_complete') {
+      return {
+        value: value,
+        currency: currency,
+        content_ids: contentIds.length ? contentIds : undefined,
+        content_type: 'product',
+        num_items: numItems || undefined,
+        order_id: String(meta.order_id || meta.orderId || meta.transaction_id || meta.orderNumber || '') || undefined
+      };
+    }
+    if (eventId === 'checkout_started') {
+      return {
+        value: value,
+        currency: currency,
+        content_ids: contentIds.length ? contentIds : undefined,
+        content_type: 'product',
+        num_items: numItems || parseInt(meta.itemCount != null ? meta.itemCount : 0, 10) || undefined
+      };
+    }
+    if (eventId === 'add_to_cart') {
+      var id = String(meta.productId || meta.product_id || contentIds[0] || '');
+      return {
+        value: value || (items[0] ? items[0].price * items[0].quantity : 0),
+        currency: currency,
+        content_ids: id ? [id] : (contentIds.length ? contentIds : undefined),
+        content_type: 'product',
+        content_name: meta.productName || meta.product_name || (items[0] && items[0].item_name),
+        num_items: parseInt(meta.quantity != null ? meta.quantity : (numItems || 1), 10) || 1
+      };
+    }
+    if (eventId === 'view_product') {
+      var vid = String(meta.productId || meta.product_id || contentIds[0] || '');
+      return {
+        value: value || parseFloat(meta.price != null ? meta.price : 0) || 0,
+        currency: currency,
+        content_ids: vid ? [vid] : (contentIds.length ? contentIds : undefined),
+        content_type: 'product',
+        content_name: meta.productName || meta.product_name || (items[0] && items[0].item_name)
+      };
+    }
+    if (eventId === 'whatsapp_click' || eventId === 'phone_click') {
+      return {
+        content_name: eventId === 'whatsapp_click' ? 'WhatsApp' : 'Phone',
+        content_category: 'contact'
+      };
+    }
+    if (eventId === 'contact_form_submitted' || eventId === 'product_inquiry') {
+      return {
+        content_name: eventId === 'product_inquiry' ? 'Product inquiry' : 'Contact form',
+        content_category: meta.productName || meta.product_name || undefined
+      };
+    }
+    return meta;
+  }
+
+  var PLATFORM = {
+    whatsapp_click: { ga4: 'contact', meta: 'Contact', gtm: 'whatsapp_click', ecom: false },
+    phone_click: { ga4: 'contact', meta: 'Contact', gtm: 'phone_click', ecom: false },
+    contact_form_submitted: { ga4: 'generate_lead', meta: 'Lead', gtm: 'contact_form_submitted', ecom: false },
+    checkout_started: { ga4: 'begin_checkout', meta: 'InitiateCheckout', gtm: 'begin_checkout', ecom: true },
+    checkout_complete: { ga4: 'purchase', meta: 'Purchase', gtm: 'purchase', ecom: true },
+    product_inquiry: { ga4: 'generate_lead', meta: 'Lead', gtm: 'product_inquiry', ecom: false },
+    add_to_cart: { ga4: 'add_to_cart', meta: 'AddToCart', gtm: 'add_to_cart', ecom: true },
+    view_product: { ga4: 'view_item', meta: 'ViewContent', gtm: 'view_item', ecom: true }
+  };
+
+  function purchaseDedupKey(orderId) {
+    return 'zappy_purchase_fired_' + String(orderId || '');
+  }
+
+  function alreadyFiredPurchase(orderId) {
+    if (!orderId) return false;
+    try {
+      return sessionStorage.getItem(purchaseDedupKey(orderId)) === '1';
+    } catch (e) {
+      return false;
+    }
+  }
+
+  function markPurchaseFired(orderId) {
+    if (!orderId) return;
+    try { sessionStorage.setItem(purchaseDedupKey(orderId), '1'); } catch (e) {}
+  }
+
+  /**
+   * Fire a marketing event to first-party analytics + GA4/GTM/Meta when present.
+   * @param {string} eventName marketing ID or ecommerce alias
+   * @param {object} [metadata]
+   * @param {{ skipFirstParty?: boolean }} [opts]
+   */
+  window.zappyFireMarketingEvent = function(eventName, metadata, opts) {
+    try {
+      opts = opts || {};
+      metadata = metadata || {};
+      var eventId = ECOM_ALIAS[eventName] || eventName;
+      var plat = PLATFORM[eventId];
+      if (!plat) return;
+
+      if (!metadata.pagePath && !metadata.page_path) {
+        metadata.pagePath = pagePath();
+      }
+
+      if (eventId === 'checkout_complete') {
+        var oid = String(metadata.orderId || metadata.order_id || metadata.transaction_id || '');
+        if (oid && alreadyFiredPurchase(oid)) return;
+        if (oid) markPurchaseFired(oid);
+      }
+
+      // First-party (skip when already tracked via zappyTrackEcomAnalytics path
+      // that opts out, or when caller already recorded under a different name)
+      if (!opts.skipFirstParty) {
+        try {
+          if (window.zappyAnalytics && typeof window.zappyAnalytics.track === 'function') {
+            window.zappyAnalytics.track(eventId, metadata);
+          }
+        } catch (e1) {}
+      }
+
+      // GTM / dataLayer — platform-standard ecommerce event names
+      try {
+        window.dataLayer = window.dataLayer || [];
+        if (plat.ecom) {
+          var ga4ForGtm = buildGa4Params(eventId, metadata);
+          var ecommerce = {};
+          if (ga4ForGtm.transaction_id) ecommerce.transaction_id = ga4ForGtm.transaction_id;
+          if (ga4ForGtm.value != null) ecommerce.value = ga4ForGtm.value;
+          if (ga4ForGtm.currency) ecommerce.currency = ga4ForGtm.currency;
+          if (ga4ForGtm.items) ecommerce.items = ga4ForGtm.items;
+          window.dataLayer.push({ event: plat.gtm, ecommerce: ecommerce });
+          // Secondary Zappy-specific trigger for merchants who want it
+          if (eventId === 'checkout_complete' || eventId === 'checkout_started') {
+            window.dataLayer.push({ event: eventId, ecommerce: ecommerce });
+          }
+        } else {
+          var dl = { event: plat.gtm };
+          for (var k in metadata) {
+            if (Object.prototype.hasOwnProperty.call(metadata, k)) dl[k] = metadata[k];
+          }
+          window.dataLayer.push(dl);
+        }
+      } catch (e2) {}
+
+      // GA4 gtag
+      try {
+        if (typeof window.gtag === 'function') {
+          window.gtag('event', plat.ga4, buildGa4Params(eventId, metadata));
+        }
+      } catch (e3) {}
+
+      // Meta Pixel (only when fbq is loaded — consent-gated lazy loader)
+      try {
+        if (typeof window.fbq === 'function') {
+          window.fbq('track', plat.meta, buildMetaParams(eventId, metadata));
+        }
+      } catch (e4) {}
+    } catch (err) {}
+  };
+
+  // ---- Click listeners (capture) ----
+  var recent = Object.create(null);
+  function dedupe(key) {
+    var now = Date.now();
+    if (recent[key] && now - recent[key] < 800) return true;
+    recent[key] = now;
+    return false;
+  }
+
+  function closest(el, selector) {
+    if (!el) return null;
+    if (el.closest) return el.closest(selector);
+    return null;
+  }
+
+  function findAnchor(el) {
+    var node = el;
+    while (node && node !== document) {
+      if (node.tagName === 'A') return node;
+      node = node.parentElement;
+    }
+    return null;
+  }
+
+  function isWhatsAppHref(href) {
+    if (!href) return false;
+    var h = String(href).toLowerCase();
+    return h.indexOf('wa.me/') !== -1 ||
+      h.indexOf('api.whatsapp.com') !== -1 ||
+      h.indexOf('whatsapp.com/send') !== -1 ||
+      h.indexOf('whatsapp:') === 0;
+  }
+
+  document.addEventListener('click', function(e) {
+    try {
+      var target = e.target;
+      if (!target) return;
+
+      // WhatsApp
+      var waFloat = closest(target, '.whatsapp-float, a.whatsapp-float, [data-zappy-whatsapp]');
+      var anchor = findAnchor(target);
+      var href = (anchor && anchor.href) || '';
+      if (waFloat || (anchor && isWhatsAppHref(href))) {
+        if (!dedupe('wa:' + href)) {
+          var waSource = waFloat ? 'float' : 'link';
+          window.zappyFireMarketingEvent('whatsapp_click', {
+            source: waSource,
+            href: href || null,
+            pagePath: pagePath()
+          });
+        }
+        return;
+      }
+
+      // Phone
+      var phoneBtn = closest(target, '.phone-header-btn, .nav-phone-btn, .call-btn, [data-zappy-phone]');
+      var telHref = '';
+      if (anchor && anchor.href && String(anchor.href).toLowerCase().indexOf('tel:') === 0) {
+        telHref = anchor.href;
+      } else if (phoneBtn && phoneBtn.href && String(phoneBtn.href).toLowerCase().indexOf('tel:') === 0) {
+        telHref = phoneBtn.href;
+      }
+      if (phoneBtn || telHref) {
+        var phone = '';
+        if (telHref) {
+          phone = String(telHref).replace(/^tel:/i, '').trim();
+        }
+        if (!dedupe('tel:' + (phone || (phoneBtn && phoneBtn.id) || 'btn'))) {
+          window.zappyFireMarketingEvent('phone_click', {
+            source: phoneBtn ? 'button' : 'link',
+            phone: phone || null,
+            href: telHref || null,
+            pagePath: pagePath()
+          });
+        }
+        return;
+      }
+
+      // Catalog / product inquiry
+      if (IS_CATALOG || IS_FULL) {
+        var inq = closest(target, '.card-inquiry-btn, #zappy-pdp-inquiry-btn, a.inquiry-btn');
+        if (inq) {
+          if (!dedupe('inq:' + (inq.id || inq.className))) {
+            var product = window.currentProduct || null;
+            var productId = (inq.getAttribute && inq.getAttribute('data-product-id')) ||
+              (product && product.id) || null;
+            var productName = (inq.getAttribute && inq.getAttribute('data-product-name')) ||
+              (product && product.name) || null;
+            var channel = 'contact_page';
+            var inqHref = (inq.tagName === 'A' && inq.href) ? inq.href : '';
+            if (inqHref && String(inqHref).toLowerCase().indexOf('mailto:') === 0) channel = 'mailto';
+            window.zappyFireMarketingEvent('product_inquiry', {
+              source: inq.id === 'zappy-pdp-inquiry-btn' ? 'pdp' : 'card',
+              productId: productId,
+              productName: productName,
+              channel: channel,
+              pagePath: pagePath()
+            });
+          }
+        }
+      }
+    } catch (err) {}
+  }, true);
+})();
+</script>
+    <meta property="og:title" content="הנדסה עם אימפקט — גרמי">
+    <meta property="og:description" content="גרמי מציעה שירותי הנדסה ובנייה ברמה הגבוהה ביותר. מהנדסי ניהול פרויקטים בנייה מומחים לתכנון ורישוי פרויקטים. צור קשר עוד היום!">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="הנדסה עם אימפקט — גרמי">
+    <meta name="twitter:description" content="גרמי מציעה שירותי הנדסה ובנייה ברמה הגבוהה ביותר. מהנדסי ניהול פרויקטים בנייה מומחים לתכנון ורישוי פרויקטים. צור קשר עוד היום!">
+    <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"LocalBusiness","@id":"https://gremi-eng.co.il#organization","name":" גרמי הנדסה","url":"https://gremi-eng.co.il","address":{"@type":"PostalAddress","streetAddress":"התעשיה 15, רעננה"},"contactPoint":[{"@type":"ContactPoint","contactType":"customer service","email":"guy@gremi-eng.co.il","telephone":"054-9275258"}]},{"@type":"WebSite","@id":"https://gremi-eng.co.il#website","url":"https://gremi-eng.co.il","name":" גרמי הנדסה","publisher":{"@id":"https://gremi-eng.co.il#organization"}}]}</script>
+    <!-- Favicons -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/favicon-16x16.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="48x48" href="/assets/favicon-48x48.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/assets/favicon-192x192.png">
+    <link rel="icon" type="image/png" sizes="512x512" href="/assets/favicon-512x512.png">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<style>
+/* Zappy Attribution Header Styles */
+.zappy-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: white;
+  box-shadow: 0px 4px 19px 0px rgba(0,0,0,0.04);
+  padding: 16px 10px;
+  text-align: center;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  color: #4a4a4a;
+  line-height: 21px;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 21px;
+  direction: ltr !important;
+  unicode-bidi: isolate;
+}
+
+    .zappy-header p {
+      margin: 0;
+      padding: 0;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 21px;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: baseline;
+      margin-bottom: 0 !important;
+      direction: ltr !important;
+    }
+
+.zappy-header .zappy-link {
+  font-weight: 700;
+  color: #4a4a4a;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.zappy-header .zappy-link:hover {
+  opacity: 0.7;
+}</style>
+    <!-- Cookie Consent -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/vanilla-cookieconsent@3/dist/cookieconsent.css">
+    
+    <!-- Mickidum Accessibility Toolbar -->
+    
+    <style id="zappy-critical-above-fold-css">
+html{box-sizing:border-box;-webkit-text-size-adjust:100%}*,*::before,*::after{box-sizing:inherit}body{margin:0;min-width:320px;overflow-x:clip}img,svg,video{max-width:100%;height:auto}main{display:block}.container{width:min(100% - 32px,1200px);margin-inline:auto}.navbar,nav.navbar,header .navbar,header[role="banner"]{position:relative;z-index:1000;width:100%}.nav-container,.navbar .container{display:flex;align-items:center;justify-content:space-between;min-height:64px}.logo,.logo-link img{display:block;width:35px;height:35px;object-fit:contain}.nav-menu,#navMenu{list-style:none;margin:0;padding:0}.navbar a,.nav-menu a,#navMenu a,.navbar .nav-links a{color:inherit;text-decoration:none}.navbar .sub-menu,.nav-menu .sub-menu,#navMenu .sub-menu{display:none}.fa,.fas,.far,.fab,.fa-solid,.fa-regular,.fa-brands{display:inline-block;min-width:1em;text-align:center}html:not(#zappy-noop)[data-zappy-site-type="ecommerce"] .phone-header-btn,html:not(#zappy-noop) .navbar:has(.nav-ecommerce-icons)>.phone-header-btn{display:none!important;visibility:hidden!important;width:0!important;height:0!important;pointer-events:none!important}.zappy-preview-empty-store-cta{display:none!important;visibility:hidden!important;height:0!important;max-height:0!important;overflow:hidden!important;margin:0!important;padding:0!important;border:0!important;box-shadow:none!important}.zappy-catalog-menu{background:var(--surface-color,var(--surface,linear-gradient(135deg,#f8f9fa 0%,#fff 100%)));border-bottom:1px solid var(--border-color,#e5e7eb);padding:0;position:sticky;top:0;z-index:90}.zappy-catalog-menu[dir=rtl],.zappy-catalog-menu.rtl{direction:rtl}.zappy-catalog-menu[dir=ltr],.zappy-catalog-menu.ltr{direction:ltr}.catalog-menu-container{max-width:1440px;margin:0 auto;display:flex;align-items:center;gap:8px;padding:10px 24px;overflow:visible}.catalog-menu-categories,.catalog-menu-list{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin:0;padding:0;list-style:none}.catalog-menu-item{display:inline-flex;align-items:center;padding:8px 16px;font-size:14px;font-weight:500;color:var(--text-color,var(--text,#374151));text-decoration:none;border-radius:20px;white-space:nowrap}.catalog-menu-all{background:var(--primary-color,var(--primary,#111));color:var(--text-light,#fff)!important}.catalog-menu-parent{position:relative;display:inline-flex;align-items:center}.catalog-menu-trigger{display:inline-flex;align-items:center;gap:6px}.catalog-menu-chevron{flex-shrink:0}.catalog-menu-parent>.sub-menu{display:none!important;visibility:hidden!important;opacity:0!important;pointer-events:none!important}.hero-section,.index-hero-section,section[class*="hero"]{position:relative;overflow:hidden}.hero-section,.index-hero-section{min-height:560px}section[data-hero-type*="fullscreen"]{min-height:100vh}.hero-bg-wrapper,.hero-bg-image,section[class*="hero"] [class*="hero-bg"]{position:absolute;inset:0;width:100%;height:100%}.hero-bg-wrapper img,.hero-bg-image img,section[class*="hero"] [data-hero-bg],section[class*="hero"] img[data-hero-background="true"]{width:100%!important;height:100%!important;object-fit:cover!important;display:block}.hero-content,section[class*="hero"] .container{position:relative;z-index:2}@media(max-width:768px){:root{--header-height:72px;--total-header-height:72px;--zappy-mobile-menu-top:72px}html[data-zappy-site-type="ecommerce"] body{padding-top:var(--total-header-height,72px)}html[data-zappy-site-type="ecommerce"] body>nav.navbar,html[data-zappy-site-type="ecommerce"] body>.navbar:not(.zappy-catalog-menu){position:fixed!important;top:0;left:0;right:0;z-index:100000;width:100%;margin-bottom:0}.zappy-catalog-menu{position:fixed;top:var(--header-height,72px);left:0;right:0;z-index:99999}.nav-container,.navbar .container{min-height:60px}.nav-menu,#navMenu{max-width:100vw;overflow-x:hidden}.hero-section,.index-hero-section,section[class*="hero"],section[data-hero-type*="fullscreen"]{min-height:100svh}.hero-bg-wrapper,.hero-bg-image,.hero-scrim{min-height:100svh}}
+:root{--nav-bg:#f8fafc}.navbar{background-color:#f8fafc!important}
+
+/* ZAPPY_ANNOUNCEMENT_HEADER_OFFSET_CSS_V3 */
+:root {
+  --zappy-header-stack-height: calc(var(--zappy-announcement-height, 40px) + var(--header-height, 72px));
+}
+body:has(.zappy-announcement-bar) nav.navbar:not(.zappy-catalog-menu),
+body:has(.zappy-announcement-bar) header.navbar,
+body:has(.zappy-announcement-bar) .navbar:not(.zappy-catalog-menu):not(.mobile-search-panel) {
+  top: var(--zappy-announcement-height, 40px) !important;
+}
+
+
+
+/* ZAPPY_CONTENT_ALIGNMENT_FIRST_PAINT_CSS_V1 */
+[data-zappy-content-align] {
+  display: flex !important;
+  flex-direction: column !important;
+}
+[data-zappy-content-align^="top-"] { justify-content: flex-start !important; }
+[data-zappy-content-align^="upper-"],
+[data-zappy-content-align^="center-"],
+[data-zappy-content-align^="lower-"] { justify-content: center !important; }
+[data-zappy-content-align^="bottom-"] { justify-content: flex-end !important; }
+[data-zappy-content-align$="-left"],
+[data-zappy-content-align$="-mid-left"] {
+  align-items: flex-start !important;
+  text-align: start !important;
+}
+[data-zappy-content-align$="-center"] {
+  align-items: center !important;
+  text-align: center !important;
+}
+[data-zappy-content-align$="-right"],
+[data-zappy-content-align$="-mid-right"] {
+  align-items: flex-end !important;
+  text-align: end !important;
+}
+[data-zappy-content-align] [data-zappy-align-target] {
+  margin-left: auto;
+  margin-right: auto;
+}
+[data-zappy-content-align$="-center"] [data-zappy-align-target],
+[data-zappy-content-align$="-center"] [data-zappy-align-target] > * {
+  text-align: center !important;
+}
+
+</style>
+    <link rel="stylesheet" href="/styles.css">
+    <script>window.ZAPPY_WEBSITE_ID = "5dade139-757e-4a58-8012-56130f342ef9"; window.ZAPPY_API_BASE = "https://api.zappy5.com";</script>
+    <link rel="preload" as="image" href="https://www.youtube.com/watch?v=a79WA8pWQgA" fetchpriority="high">
 
     <style id="zappy-dropdown-submenu-styles">
       /* ========== DESKTOP DROPDOWN SUBMENU STYLES ========== */
       /* Base styles for dropdown submenus - parent must be positioned */
       .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { position: relative; }
       /* Submenu base - hidden by default */
-      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; background: white; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
+      .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { display: block !important; position: absolute !important; top: 100%; left: 0; min-width: 220px; border-radius: 8px; box-shadow: 0 8px 25px rgba(0,0,0,0.15); padding: 8px 0; opacity: 0; visibility: hidden; transform: translateY(10px); transition: all 0.3s ease; z-index: 1000; list-style: none; pointer-events: none; }
       /* CRITICAL: Desktop hover styles to show dropdown */
       .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
       /* Submenu item styling */
       .sub-menu li { list-style: none; margin: 0; padding: 0; }
-      .sub-menu a { display: block !important; padding: 10px 16px !important; color: #333 !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu a { display: block !important; padding: 10px 16px !important; color: var(--text-dark, #333) !important; font-weight: 500; text-decoration: none; white-space: nowrap; transition: background-color 0.2s; }
+      .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+      [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 10px !important; padding-right: 28px !important; }
+      .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
       .sub-menu a:hover { background-color: #f5f5f5; }
       /* RTL (Hebrew/Arabic) dropdown positioning */
       [dir="rtl"] .nav-menu .sub-menu, [dir="rtl"] nav .sub-menu, [dir="rtl"] .navbar .sub-menu, html[lang="he"] .nav-menu .sub-menu, html[lang="he"] nav .sub-menu, html[lang="he"] .navbar .sub-menu, html[lang="ar"] .nav-menu .sub-menu, html[lang="ar"] nav .sub-menu, html[lang="ar"] .navbar .sub-menu { left: auto !important; right: 0 !important; }
-      /* Hide empty dropdown menus */
-      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))), .sub-menu:not(:has(li)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
+      /* Hide empty dropdown menus (exclude catalog sub-menus that use <a> children instead of <li>) */
+      .sub-menu:empty, .sub-menu:not(:has(li:not(.zappy-hidden-menu-item))):not(:has(> a)), .sub-menu:not(:has(li)):not(:has(> a)) { display: none !important; opacity: 0 !important; visibility: hidden !important; pointer-events: none !important; }
       /* Desktop: show submenu on Menu Group hover */
       li:has(.menu-group-title):hover > .sub-menu { opacity: 1 !important; visibility: visible !important; transform: translateY(0) !important; pointer-events: auto !important; }
       /* Menu Group title styling */
@@ -293,26 +739,66 @@
       /* ========== MOBILE SUBMENU STYLES ========== */
       @media (max-width: 768px) {
         .nav-menu .sub-menu, nav .sub-menu, .navbar .sub-menu, #navMenu .sub-menu { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; max-height: 0; overflow: hidden; opacity: 0; visibility: hidden; transition: max-height 0.3s ease, opacity 0.3s ease; padding: 0 !important; border-radius: 0 !important; }
-        .sub-menu.mobile-expanded { max-height: 500px !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
+        .navbar .sub-menu.mobile-expanded, .nav-menu .sub-menu.mobile-expanded, #navMenu .sub-menu.mobile-expanded { max-height: none !important; overflow-y: visible !important; opacity: 1 !important; visibility: visible !important; padding: 8px 0 8px 16px !important; }
         [dir="rtl"] .sub-menu.mobile-expanded, html[lang="he"] .sub-menu.mobile-expanded { padding: 8px 16px 8px 0 !important; }
         /* Disable hover behavior on mobile */
         .nav-menu li:hover > .sub-menu, nav li:hover > .sub-menu, .navbar li:hover > .sub-menu, #navMenu li:hover > .sub-menu { opacity: 0; visibility: hidden; pointer-events: none; }
         .nav-menu li > .sub-menu.mobile-expanded, nav li > .sub-menu.mobile-expanded, .navbar li > .sub-menu.mobile-expanded, #navMenu li > .sub-menu.mobile-expanded { opacity: 1 !important; visibility: visible !important; pointer-events: auto !important; }
-        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; }
-        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; }
+        .nav-menu li:has(.sub-menu), nav li:has(.sub-menu), .navbar li:has(.sub-menu), #navMenu li:has(.sub-menu) { display: flex !important; flex-wrap: wrap !important; align-items: center !important; position: relative !important; min-height: 44px !important; }
+        .nav-menu li:has(.sub-menu) > a, nav li:has(.sub-menu) > a, .navbar li:has(.sub-menu) > a, #navMenu li:has(.sub-menu) > a { flex: 1 !important; min-width: 0 !important; }
+        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; min-width: 0 !important; display: flex !important; align-items: center !important; padding: 12px 16px !important; min-height: 44px !important; line-height: 1.4 !important; font-weight: 600 !important; box-sizing: border-box !important; }
+        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu, .navbar li:has(.sub-menu) > .sub-menu, #navMenu li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
         .nav-menu li:has(.sub-menu) > a [class*="chevron"], .nav-menu li:has(.sub-menu) > a [class*="arrow"], .nav-menu li:has(.sub-menu) > a .fa-chevron-down, .nav-menu li:has(.sub-menu) > a .fa-angle-down, nav li:has(.sub-menu) > a [class*="chevron"], nav li:has(.sub-menu) > a [class*="arrow"], #navMenu li:has(.sub-menu) > a [class*="chevron"], #navMenu li:has(.sub-menu) > a [class*="arrow"] { display: none !important; visibility: hidden !important; }
-        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: 44px !important; background: transparent !important; border: none !important; cursor: pointer !important; }
+        .mobile-submenu-toggle { display: flex !important; align-items: center !important; justify-content: center !important; width: 44px !important; height: auto !important; background: transparent !important; border: none !important; cursor: pointer !important; color: var(--text-dark) !important; position: static !important; flex-shrink: 0 !important; align-self: stretch !important; z-index: 2 !important; padding: 0 !important; margin: 0 !important; }
         .mobile-submenu-toggle::after { content: '' !important; width: 0 !important; height: 0 !important; border-left: 6px solid transparent !important; border-right: 6px solid transparent !important; border-top: 7px solid currentColor !important; transition: transform 0.3s ease !important; }
         .mobile-submenu-toggle.expanded::after { transform: rotate(180deg) !important; }
-        .nav-menu li:has(.sub-menu) > .sub-menu, nav li:has(.sub-menu) > .sub-menu { flex-basis: 100% !important; width: 100% !important; }
-        .sub-menu a { padding: 10px 0 !important; display: block !important; }
-        .nav-menu li:has(.sub-menu) > .menu-group-title, nav li:has(.sub-menu) > .menu-group-title, .navbar li:has(.sub-menu) > .menu-group-title, #navMenu li:has(.sub-menu) > .menu-group-title { flex: 1 !important; }
+        .sub-menu a { padding: 10px 0 !important; display: block !important; color: var(--text-dark) !important; white-space: normal !important; }
+        .sub-menu .zappy-nav-child > a { padding-left: 28px !important; font-size: 0.9em !important; opacity: 0.85 !important; }
+        [dir="rtl"] .sub-menu .zappy-nav-child > a, html[lang="he"] .sub-menu .zappy-nav-child > a, html[lang="ar"] .sub-menu .zappy-nav-child > a { padding-left: 0 !important; padding-right: 28px !important; }
+        .sub-menu .zappy-nav-parent > a { font-weight: 600 !important; }
+        .nav-menu.active, #navMenu.active { max-width: 100vw !important; overflow-x: hidden !important; box-sizing: border-box !important; }
+        .navbar .sub-menu li a, nav.navbar .sub-menu li a, .zappy-products-dropdown .sub-menu a { color: var(--text-dark) !important; }
       }
       @media (min-width: 769px) { .mobile-submenu-toggle { display: none !important; } }
     </style>
-    <link rel="stylesheet" href="/styles.css">
+<style data-zappy-image-carousel-css="true">[data-zappy-image-carousel]{position:relative;overflow:hidden}.zappy-carousel-hero[data-zappy-image-carousel]{position:absolute;inset:0;z-index:0}[data-zappy-image-carousel]>.zappy-carousel-slide{position:absolute;inset:0;opacity:0;transition:opacity 1s ease-in-out;pointer-events:none;z-index:0}[data-zappy-image-carousel]>.zappy-carousel-slide.is-active{opacity:1;pointer-events:auto;z-index:1}[data-zappy-image-carousel]>.zappy-carousel-slide img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;max-width:none!important;max-height:none!important;margin:0!important}[data-zappy-image-carousel]>.zappy-carousel-slide img:not([data-zappy-carousel-image-ready="true"]){opacity:0!important}[data-zappy-image-carousel]>.zappy-carousel-slide img[data-zappy-carousel-image-ready="true"]{opacity:1!important;transition:opacity .15s ease}@media(scripting:none){[data-zappy-image-carousel]>.zappy-carousel-slide img{opacity:1!important}}.zappy-carousel-hero[data-zappy-image-carousel]>.zappy-carousel-slide img{position:absolute!important;top:0!important;left:0!important}[data-zappy-image-carousel] .zappy-carousel-slide-link{position:absolute;inset:0;display:block;z-index:2;background:transparent}.zappy-hero-link-overlay{position:absolute;inset:0;display:block;z-index:1;background:transparent}body.zappy-edit-mode .zappy-hero-link-overlay,body.zappy-edit-mode [data-zappy-image-carousel] .zappy-carousel-slide-link,body.zappy-image-edit-mode .zappy-hero-link-overlay,body.zappy-image-edit-mode [data-zappy-image-carousel] .zappy-carousel-slide-link{pointer-events:none!important}</style>
+    <style id="zappy-widget-visibility">
+      html[dir="rtl"] .whatsapp-float { right: 20px !important; left: auto !important; }
+      html[dir="ltr"] .whatsapp-float, html:not([dir]) .whatsapp-float { left: 20px !important; right: auto !important; }
+      html[dir="rtl"] #mic-access-tool-general-button, html[dir="rtl"] .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="rtl"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="rtl"] ._access-icon { left: 20px !important; right: auto !important; }
+      html[dir="ltr"] #mic-access-tool-general-button, html[dir="ltr"] .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool .mic-access-tool-general-button,
+      html[dir="ltr"] #mic-init-access-tool #mic-access-tool-general-button,
+      html[dir="ltr"] ._access-icon,
+      html:not([dir]) #mic-access-tool-general-button, html:not([dir]) .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool .mic-access-tool-general-button,
+      html:not([dir]) #mic-init-access-tool #mic-access-tool-general-button,
+      html:not([dir]) ._access-icon { right: 20px !important; left: auto !important; }
+      @media (max-width: 768px) { .whatsapp-float { display: flex !important; } }
+      @media (min-width: 769px) { .whatsapp-float { display: flex !important; } }
+      @media (max-width: 768px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+        #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+          display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+        }
+      }
+      @media (min-width: 769px) {
+        #mic-access-tool-general-button, .mic-access-tool-general-button,
+        #mic-init-access-tool .mic-access-tool-general-button, #mic-init-access-tool #mic-access-tool-general-button,
+        ._access-icon, #mic-access-tool-box, .mic-access-tool-box,
+        #mic-init-access-tool #mic-access-tool-box, div[id*="mic-access-tool-box"], ._access-menu {
+          display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
+        }
+      }
+    </style>
 </head>
 <body>
+
 
 <!-- Zappy Attribution Header -->
 <div id="zappy-attribution-header" class="zappy-header" style="display: none;">
@@ -322,7 +808,7 @@
 <div class="container nav-container">
 <div class="nav-brand">
 <a href="/" class="logo-link">
-<img src="/assets/logo.webp" alt=" גרמי הנדסה" class="logo">
+<img src="/assets/logo.webp" alt=" גרמי הנדסה" class="logo" decoding="async" width="35" height="35">
 </a>
 </div>
 <button class="mobile-toggle" id="mobileToggle" aria-label="Toggle menu">
@@ -351,7 +837,7 @@
 <div class="hero-video-background">
   <div class="hero-video-overlay"></div>
   <iframe class="hero-video-iframe" src="https://www.youtube.com/embed/a79WA8pWQgA?autoplay=1&amp;mute=1&amp;loop=1&amp;playlist=a79WA8pWQgA&amp;controls=0&amp;showinfo=0&amp;modestbranding=1&amp;rel=0" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" loading="lazy"></iframe>
-  <img class="hero-video-fallback" src="https://www.youtube.com/watch?v=a79WA8pWQgA" alt="Hero background" loading="lazy">
+  <img loading="eager" fetchpriority="high" class="hero-video-fallback" src="https://www.youtube.com/watch?v=a79WA8pWQgA" alt="Hero background" decoding="async">
 </div>
   <style>
     .hero-section {
@@ -648,7 +1134,7 @@
         <h2 class="section-title">למה גרמי הנדסה היא הבחירה המושלמת ליזמים שאינם מתפשרים</h2>
         
         <div class="text-blocks">
-          <p class="highlight-text"> בגרמי - הנדסה נטו,&nbsp;<u style="color: rgb(26, 26, 26); font-family: Rubik, &quot;Noto Sans Hebrew&quot;, Arial, sans-serif;"><b>גיא יגן עצמו הוא זה שמוביל את התכנון בפועל</b></u>. לא מדובר בחברה שמעבירה את העבודה למהנדסים זוטרים, אלא בליווי אישי ומקצועי של מהנדס מנוסה, שנמצא בפרונט של כל ישיבה, כל תיאום וכל שלב בתהליך.                                                 המודל הזה מאפשר לגיא&nbsp;<b style="color: rgb(26, 26, 26); font-family: Rubik, &quot;Noto Sans Hebrew&quot;, Arial, sans-serif;"><u style="">לייצר אימפקט ישיר וגבוה על איכות התכנון, על מסגרת התקציב ועל ההיתכנות ההנדסית&nbsp;</u></b>- כבר מהשלבים הראשונים.           &gt;לייצר אימפקט ישיר וגבוה על איכות התכנון, על מסגרת התקציב ועל ההיתכנות ההנדסית- כבר מהשלבים הראשונים.           </p>
+          <p class="highlight-text" style=""> בגרמי - הנדסה נטו, אנו<u style="color: rgb(26, 26, 26); font-family: Rubik, &quot;Noto Sans Hebrew&quot;, Arial, sans-serif;"><b>&nbsp;מובילים את התכנון בפועל</b></u>. לא מדובר בחברה שמעבירה את העבודה למהנדסים זוטרים, אלא בליווי אישי ומקצועי של מהנדס מנוסה, שנמצא בפרונט של כל ישיבה, כל תיאום וכל שלב בתהליך.                                                 המודל הזה מאפשר לגיא&nbsp;<b style="color: rgb(26, 26, 26); font-family: Rubik, &quot;Noto Sans Hebrew&quot;, Arial, sans-serif;"><u style="">לייצר אימפקט ישיר וגבוה על איכות התכנון, על מסגרת התקציב ועל ההיתכנות ההנדסית&nbsp;</u></b>- כבר מהשלבים הראשונים.           &gt;לייצר אימפקט ישיר וגבוה על איכות התכנון, על מסגרת התקציב ועל ההיתכנות ההנדסית- כבר מהשלבים הראשונים.           </p>
           
           <p class="body-text">
             
@@ -659,7 +1145,7 @@
           </p>
           
           <p class="body-text"> עם כמעט 30 שנות ניסיון בפרויקטי נדל"ן מורכבים - כולל מגדלי מגורים, משרדים, מרכזים מעורבים, דיור מוגן, תעסוקה ומלונאות - גיא יגן מקים את גרמי כחברת בוטיק ממוקדת, שמביאה ללקוחות תכנון ברמה הגבוהה ביותר, מבלי לאבד שליטה על הפרטים הקטנים. אנחנו לא חברה רחבה עם היררכיה בירוקרטית - אלא גוף חד, מדויק ומוביל שבו הדמות שיזם פוגש בפגישה היא אותה דמות שמקבלת החלטות הנדסיות בשטח. השילוב בין חשיבה אסטרטגית, ניהול תכנוני הדוק, ונוכחות יומיומית - הוא זה שמבטיח ללקוחות שלנו יתרון תחרותי אמיתי.</p>
-        </div><div class="zappy-inserted-element" id="zappy-element-1771345476315-vdrjg7zqq" data-element-id="zappy-element-1771345476315-vdrjg7zqq" data-element-type="video" style="max-width: 1440px; margin: 20px auto; display: flex; justify-content: center; text-align: center;"><div style="width: 1200px; max-width: none; display: block; margin-left: auto; margin-right: auto;"><div style="position: relative; width: 1200px; max-width: none; height: 675px; padding-bottom: 0px; background: rgb(0, 0, 0); border-radius: 8px; overflow: hidden; max-height: none;" data-element-type="video" data-element-id="zappy-element-1771345476315-vdrjg7zqq" id="zappy-element-1771345476315-vdrjg7zqq" class="zappy-resizable-hover"><iframe src="https://www.youtube.com/embed/k02kF-zjxZE" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div></div></div>
+        </div><div class="zappy-inserted-element" id="zappy-element-1771345476315-vdrjg7zqq" data-element-id="zappy-element-1771345476315-vdrjg7zqq" data-element-type="video" style="max-width: 1440px; margin: 20px auto; display: flex; justify-content: center; text-align: center; position: relative;"><div style="width: 1200px; max-width: none; display: block; margin-left: auto; margin-right: auto;"><div style="position: relative; width: 1200px; max-width: none; height: 675px; padding-bottom: 0px; background: rgb(0, 0, 0); border-radius: 8px; overflow: hidden; max-height: none;" data-element-type="video" data-element-id="zappy-element-1771345476315-vdrjg7zqq" id="zappy-element-1771345476315-vdrjg7zqq" class="zappy-resizable-hover"><iframe src="https://www.youtube.com/embed/k02kF-zjxZE" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; " allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe></div></div></div>
       </div>
   </div>
 </section>
@@ -671,71 +1157,71 @@
 <div class="container">
 <h2>הפרויקטים המובילים שביצעתי</h2>
 <div class="services-grid zappy-preserve-css-grid" data-original-item-width="311" data-original-gap="32px" data-zappy-explicit-columns="true" id="zappy-auto-grid-1767792376593-iduyfn" data-zappy-auto-grid="true" style="--zappy-grid-cols: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); display: grid;" data-zappy-display-mode="carousel"><div class="service-card" style="" data-grid-item-index="0">
-<img data-placeholder="service-1" data-context="Professional engineer reviewing architectural blueprints and construction plans on large drafting table with modern tools" src="/assets/business-general-service-upload-1767791426216.webp" alt="מהנדס בוחן תוכניות בנייה מפורטות" data-element-type="image" data-element-id="img-1767706799014-g7gl0sdw1" class="zappy-editable-image" data-original-position="static" style="position: relative;; object-position: 50% 50%;" data-resize-handler-attached="true">
+<img data-placeholder="service-1" data-context="Professional engineer reviewing architectural blueprints and construction plans on large drafting table with modern tools" src="/assets/business-general-service-upload-1767791426216.webp" alt="מהנדס בוחן תוכניות בנייה מפורטות" data-element-type="image" data-element-id="img-1767706799014-g7gl0sdw1" class="zappy-editable-image" data-original-position="static" style="position: relative;; object-position: 50% 50%;" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="">מנהל הפרויקט - יד חרוצים נתניה</h3>
 <p>מגדל משרדים בן 28 קומות<br><br>כולל  2 קומות מסחר ע"ג 4 קומות חניון<br><br>סה"כ  :כ 45,000 מ"ר 3היתרי בניה -היתר חפירה ודיפון, היתר זכויות קיימות, היתר זכויות סופיות מהתב"ע<br><br>ביצוע תב"ע בוועדה המקומית<br><br>הוצאת מיכרזי קבלנים<br><br>העתקת תשתיות ותאום הנדסי<br><br></p>
 </div><div class="service-card" style="" data-grid-item-index="1">
-<img data-placeholder="service-2" data-context="Construction site manager coordinating with team using tablet and digital project management tools on active building site" src="/assets/business-general-service-upload-1767792283822.webp" alt="מנהל פרויקט מתאם עם צוות באתר בנייה" data-element-type="image" data-element-id="img-1767706799014-bjbdfywiv" class="zappy-editable-image" data-original-position="static" style="position: relative;;;;;;; object-position: 41% 46%;" data-resize-handler-attached="true">
+<img data-placeholder="service-2" data-context="Construction site manager coordinating with team using tablet and digital project management tools on active building site" src="/assets/business-general-service-upload-1767792283822.webp" alt="מנהל פרויקט מתאם עם צוות באתר בנייה" data-element-type="image" data-element-id="img-1767706799014-bjbdfywiv" class="zappy-editable-image" data-original-position="static" style="position: relative;;;;;;; object-position: 41% 46%;" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="">מגה פרויקט - מנהל תכנון למכרז BOT בירושלים</h3>
 <p style="">מיקום : מתחם הכניסה לעיר<br><br>היקף מעל מיליארד ש"ח<br><br>כ 120,000 מ"ר<br><br>עבודה מול יזם ויועצים מובילים<br><br>תחומי מיקוד מורכבים - קירות מסך, שלד, ביסוס, חניונים, בניה ירוקה ומערכות PV<br><br>הפרדות תנועות ואוכלוסיות , גגות טכניים, איזורים לוגיסטיים ואמצעי מיגון מורכבים   </p>
 </div><div class="service-card" style="" data-grid-item-index="2">
-<img data-placeholder="service-3" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799367877.webp" alt="מהנדס אזרחי בודק עבודות יסוד" data-element-type="image" data-element-id="img-1767706799014-tvj14ek3n" class="zappy-editable-image" data-original-position="static" style="position: relative;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" data-resize-handler-attached="true">
+<img data-placeholder="service-3" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799367877.webp" alt="מהנדס אזרחי בודק עבודות יסוד" data-element-type="image" data-element-id="img-1767706799014-tvj14ek3n" class="zappy-editable-image" data-original-position="static" style="position: relative;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="">מנהל 
 
 תכנון ורישוי - בבלי 3 בתל אביב</h3>
 <p style="">מגדל יוקרתי בן 48 קומות  כולל בריכות ספא ואיזורי נוחות<br><br>224 דירות עג" חניון משותף  (ל 5 בניינים)<br><br></p>
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="3">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799398262.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767707741750-0-skob7dgms" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 39% 47%;" id="new-grid-img-1767707741750-0-skob7dgms" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799398262.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767707741750-0-skob7dgms" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 39% 47%;" id="new-grid-img-1767707741750-0-skob7dgms" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל 
 
 תכנון ורישוי -עץ השקד בלוד בן שמן</h3>
 <p style="cursor: text;">שטח המגרש: 10.817 ד'<br><br>כמות יחידות דיור: 132 יח"ד ב 2 מבנים בני 15 קומות<br><br>מבנה מסחר ותעסוקה<br><br>שטח למסחר: 5,350 מ"ר<br><br>עיקרי: 4,200 מ"ר<br><br>שטח לתעסוקה: 6,000 מ"ר<br><br>עיקרי: 5,000 מ"ר<br><br>דרישות חניה: 459 חניות</p>
 </div><div class="service-card" style="" data-grid-item-index="4">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799462648.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767707744640-0-3qjwxd06e" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767707744640-0-3qjwxd06e" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799462648.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767707744640-0-3qjwxd06e" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767707744640-0-3qjwxd06e" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל תכנון רישוי וביצוע מרתפים- פרויקט חוות גורדון ת"א</h3>
 <p style="cursor: text;">הפרויקט בו שני מגדלים בני 25 קומות ובהם 164 יחידות דיור בנות 4 ו-5 חד', דופלקסים, מיני-פנטהאוזים ופנטהאוזים. בין המגדלים ניבנה מיני-קאנטרי ובו בריכת שחיה וחדר כושר חדשני.</p>
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="5">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799522047.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767793965602-0-m4a6fjfz9" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767793965602-0-m4a6fjfz9" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799522047.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767793965602-0-m4a6fjfz9" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767793965602-0-m4a6fjfz9" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">יד חרוצים 32 נתניה- איזורי מסחר</h3>
 <p style="cursor: text;">2 קומות איזורי מסחר -קומות גבוהות - כולל הסעדה</p>
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="6">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799483932.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767794034129-0-7luri7kj9" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767794034129-0-7luri7kj9" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767799483932.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767794034129-0-7luri7kj9" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767794034129-0-7luri7kj9" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">בית הנשיא חדרה - דיור מוגן</h3>
 <p style="cursor: text;">מגדל 22 קומות הכוללות הרחבת בית הנשיא ב 80 יח"ד כולל מרתפים, הזזת חדר טרפו,  פתרונות הנדסיים סבוכים בשטח עירוני קטן וסבוך            ניהול תהליך תב"ע  מחוזית להרחבת זכויות מ 10 קומות ל 22 קומות עד להפקדה ואישור הזכויות .                                שיפוץ בית הנשיא הישן ושילובו בפרויקט החדש</p>
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="7">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883075771.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795118679-0-61yp40oqz" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767795118679-0-61yp40oqz" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883075771.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795118679-0-61yp40oqz" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767795118679-0-61yp40oqz" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;"></h3><h3 style="">קבוצת רוכשים - פארק המדע נס ציונה            קומת קרקע מסחר<br><span><span>100 חדרי מעונות סטודנטים, 8 קומות משרדים ותעסוקה.</span></span></h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="8">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1768114458339.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795194446-0-39t3b7aaa" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767795194446-0-39t3b7aaa" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1768114458339.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795194446-0-39t3b7aaa" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767795194446-0-39t3b7aaa" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל תכנון בניין ה IT מכון ויצמן - 10 קומות ע"ג 2 קומות חניון</h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="9">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1768114877752.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795376390-0-dik1ysp62" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;;; object-position: 50% 50%;" id="new-grid-img-1767795376390-0-dik1ysp62" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1768114877752.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795376390-0-dik1ysp62" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;;; object-position: 50% 50%;" id="new-grid-img-1767795376390-0-dik1ysp62" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל פרויקט יזמי - ביצוע 2004-2008 המגדל המרובע של עזריאלי</h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="10">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883989568.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795453937-0-9bfxd7vno" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;;;; object-position: 50% 50%;" id="new-grid-img-1767795453937-0-9bfxd7vno" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883989568.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767795453937-0-9bfxd7vno" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;;;; object-position: 50% 50%;" id="new-grid-img-1767795453937-0-9bfxd7vno" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל תכנון פרויקט ניבה גת רימון - יזם YBOX פרויקט מעורב משרדים מלונאות ומגורים</h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="11">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883118455.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767796047593-0-xdjj39cqq" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767796047593-0-xdjj39cqq" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883118455.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767796047593-0-xdjj39cqq" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767796047593-0-xdjj39cqq" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל תכנון מגדל במתחם חסאן ערפה - יזם YBOX פרויקט מעורב משרדים ומגורים</h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="12">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883130239.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767796113281-0-ic43jj9z9" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767796113281-0-ic43jj9z9" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767883130239.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767796113281-0-ic43jj9z9" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767796113281-0-ic43jj9z9" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">מנהל תכנון מרכז צ'מפיון בנחל שורק - יזם אלייד</h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="13">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767796209427.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767796120469-0-f6v7rupc3" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767796120469-0-f6v7rupc3" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767796209427.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767796120469-0-f6v7rupc3" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;; object-position: 50% 50%;" id="new-grid-img-1767796120469-0-f6v7rupc3" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">פרויקט גמלא 7-9 בקרית אונו 92 יח"ד על גבי מרתפים משותפים -מנהל תיכנון ורישוי&nbsp; &nbsp;</h3>
 
 </div><div class="service-card" style="box-sizing: border-box; background-color: rgb(255, 255, 255) !important; padding: 24px !important;" data-grid-item-index="14">
-<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767801265443.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767801254525-0-6aba7r0hk" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767801254525-0-6aba7r0hk" data-ai-slot="grid-item-image" data-resize-handler-attached="true">
+<img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1767801265443.webp" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1767801254525-0-6aba7r0hk" class="zappy-editable-image" data-original-position="static" style="position: relative; cursor: pointer;  width: auto; max-width: 100%; display: block; margin-left: auto; margin-right: auto;;; object-position: 50% 50%;" id="new-grid-img-1767801254525-0-6aba7r0hk" data-ai-slot="grid-item-image" data-resize-handler-attached="true" loading="lazy" decoding="async" fetchpriority="low">
 <h3 style="cursor: text;">פרויקט אינפיניטי - היזם חג'ג' - עוזר למנהל התכנון ומנהל פרויקט דיפון ועבודות קרקע</h3>
 
 </div><div class="service-card" style="background-color: rgb(255, 255, 255) !important; padding: 24px !important; box-sizing: border-box;" data-grid-item-index="15">
-<div data-zappy-zoom-wrapper="true" data-element-id="new-grid-img-1769434418785-0-3vakwrtn3" data-element-type="image" data-zappy-zoom-wrapper-width="223px" data-zappy-zoom-wrapper-height="220px" data-zappy-zoom-wrapper-width-mode="px" data-zappy-zoom-clip="true" data-zappy-wrapper-margins-applied="true" style="position: relative !important; overflow: hidden !important; width: 223px !important; max-width: 100% !important; margin-left: auto !important; margin-right: auto !important; height: 220px !important; display: block !important;"><img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1769434536704.webp?t=1769434536602" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1769434418785-0-3vakwrtn3" class="zappy-editable-image" data-original-position="static" style="position: absolute !important; cursor: pointer; width: 100% !important; max-width: none !important; display: block !important; margin: 0px !important; object-position: 41% 38%; left: 0% !important; top: -0.310909% !important; height: 100.818% !important; max-height: none !important; object-fit: fill !important;" id="new-grid-img-1769434418785-0-3vakwrtn3" data-ai-slot="grid-item-image" data-zappy-zoom="0.8" data-zappy-original-width="223.3000030517578" data-zappy-original-height="220"></div>
+<div data-zappy-zoom-wrapper="true" data-element-id="new-grid-img-1769434418785-0-3vakwrtn3" data-element-type="image" data-zappy-zoom-wrapper-width="223px" data-zappy-zoom-wrapper-height="220px" data-zappy-zoom-wrapper-width-mode="px" data-zappy-zoom-clip="true" data-zappy-wrapper-margins-applied="true" style="position: relative !important; overflow: hidden !important; width: 223px !important; max-width: 100% !important; margin-left: auto !important; margin-right: auto !important; height: 220px !important; display: block !important;"><img data-placeholder="image-placeholder" data-context="Civil engineer inspecting structural foundation work with safety equipment on modern construction project" src="/assets/business-general-service-upload-1769434536704.webp?t=1769434536602" alt="Image placeholder" data-element-type="image" data-element-id="new-grid-img-1769434418785-0-3vakwrtn3" class="zappy-editable-image" data-original-position="static" style="position: absolute !important; cursor: pointer; width: 100% !important; max-width: none !important; display: block !important; margin: 0px !important; object-position: 41% 38%; left: 0% !important; top: -0.310909% !important; height: 100.818% !important; max-height: none !important; object-fit: fill !important;" id="new-grid-img-1769434418785-0-3vakwrtn3" data-ai-slot="grid-item-image" data-zappy-zoom="0.8" data-zappy-original-width="223.3000030517578" data-zappy-original-height="220" loading="lazy" decoding="async" fetchpriority="low"></div>
 <h3 style="cursor: text;">פרויקט BBC בני ברק -היזם עיריית בני ברק - 1200 מקומות חניה -תאום תכנון, ביצוע דיפון חפירה ויסודות.</h3>
 
 </div></div>
@@ -777,7 +1263,7 @@
 </div>
 </div>
 <div class="why-image">
-<img id="element-saved-1767705538407-gcox5ltq3v" src="/assets/business-general-service-upload-1767705536453.webp" alt="Image" style="width: auto; height: auto; border-radius: 8px; max-width: 100%; object-fit: cover; object-position: 50% 50%;" data-element-type="image" width="636">
+<img id="element-saved-1767705538407-gcox5ltq3v" src="/assets/business-general-service-upload-1767705536453.webp" alt="Image" style="width: auto; height: auto; border-radius: 8px; max-width: 100%; object-fit: cover; object-position: 50% 50%;" data-element-type="image" width="636" loading="lazy" decoding="async" fetchpriority="low">
 </div>
 </div>
 </div>
@@ -945,6 +1431,12 @@
 </script>
     <div data-integration="accessibility:toolbar"></div>
 
+    <script src="/script.js"></script>
+
+    <script id="zappy-font-awesome-loader">
+(function(){if(window.__zappyFontAwesomeLoader)return;window.__zappyFontAwesomeLoader=true;var href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';function load(){if(document.querySelector('link[href*="font-awesome"][href*="all.min.css"]'))return;var l=document.createElement('link');l.rel='stylesheet';l.href=href;l.crossOrigin='anonymous';l.referrerPolicy='no-referrer';document.head.appendChild(l);}function schedule(){if('requestIdleCallback'in window){requestIdleCallback(load,{timeout:5000});}else{setTimeout(load,3500);}}['pointerdown','keydown','touchstart','mouseover'].forEach(function(evt){window.addEventListener(evt,load,{once:true,passive:true});});schedule();})();
+</script>
+
     <script id="zappy-mobile-submenu-script">
     (function() {
       function initMobileSubmenuToggles() {
@@ -995,5 +1487,522 @@
       }, 500);
     })();
     </script>
-    <script src="/script.js"></script>
-</body></html>
+
+    <script>
+    (function(){
+      var _applied=false;
+      function _isHeroBg(w){var img=w.querySelector('img');if(img&&(img.getAttribute('data-hero-bg')==='true'||img.getAttribute('data-hero-background')==='true'))return true;var p=(w.style.position||'').replace(/\s*!important\s*/g,'').trim();var ww=(w.style.width||'').replace(/\s*!important\s*/g,'').trim();var hh=(w.style.height||'').replace(/\s*!important\s*/g,'').trim();return p==='absolute'&&ww==='100%'&&hh==='100%';}
+      function fixDesktopWrappers(){
+        // No-op: desktop wrapper restoration is handled by ZAPPY_PUBLISHED_ZOOM_WRAPPER_RUNTIME
+        // in script.js (restoreWrapperDimensions). The old inflation logic here was expanding
+        // small wrappers (e.g. 139px logo wrappers) to their parent width, conflicting with
+        // the correct stored dimensions.
+      }
+      function _parsePos(s){var x=50,y=50;try{var m=(s||'').match(/(-?d+(?:.d+)?)%s+(-?d+(?:.d+)?)%/);if(m){x=parseFloat(m[1]);y=parseFloat(m[2]);}}catch(e){}if(!isFinite(x))x=50;if(!isFinite(y))y=50;return{x:Math.max(0,Math.min(100,x)),y:Math.max(0,Math.min(100,y))};}
+      function _coverPct(iA,cA){if(!isFinite(iA)||iA<=0||!isFinite(cA)||cA<=0)return{w:100,h:100};if(iA>=cA)return{w:(iA/cA)*100,h:100};return{w:100,h:(cA/iA)*100};}
+      function applyMobile(){
+        if(_applied)return;_applied=true;
+        document.querySelectorAll('[data-zappy-zoom-wrapper="true"]').forEach(function(w){
+          if(_isHeroBg(w))return;
+          var cw=w.style.getPropertyValue('width');
+          var _sW=parseFloat(w.getAttribute('data-zappy-zoom-wrapper-width'))||0;
+          var _sH=parseFloat(w.getAttribute('data-zappy-zoom-wrapper-height'))||0;
+          if(!cw&&!(_sW>0&&_sH>0))return;
+          if(!w._zappyDesktop)w._zappyDesktop={wStyle:w.getAttribute('style')};
+          var img=w.querySelector('img');
+          if(!img)return;
+          if(!img._zappyDesktop)img._zappyDesktop={src:img.getAttribute('src'),style:img.getAttribute('style')};
+          var mobileZoomStr=img.getAttribute('data-zappy-mobile-zoom');
+          var mobileZoom=parseFloat(mobileZoomStr);
+          var mobileSrc=img.getAttribute('data-zappy-mobile-src');
+          var mobilePos=img.getAttribute('data-zappy-mobile-object-position');
+          var parentOvf=w.parentElement?((w.parentElement.style.overflow||'')+(window.getComputedStyle(w.parentElement).overflow||'')).trim():'';
+          var inConstrainedParent=parentOvf.indexOf('hidden')!==-1||parentOvf.indexOf('clip')!==-1;
+          if(inConstrainedParent){
+            w.style.setProperty('max-width','100%','important');
+          }else{
+            w.style.setProperty('width','100%','important');
+            w.style.setProperty('max-width','100%','important');
+          }
+          if(mobileSrc)img.src=mobileSrc;
+          function _applyZoomCrop(_img,_w,_ePos,_eZoom){
+            var rect=_w.getBoundingClientRect();
+            if(!rect||!rect.width||!rect.height)return;
+            var nW=_img.naturalWidth||0,nH=_img.naturalHeight||0;
+            if(!(nW>0&&nH>0))return;
+            var iA=nW/nH,cA=rect.width/rect.height;
+            var cv=_coverPct(iA,cA);
+            var wP=100,hP=100;
+            if(_eZoom>=1){wP=cv.w*_eZoom;hP=cv.h*_eZoom;}
+            else{var t2=(_eZoom-0.5)/0.5;if(!isFinite(t2))t2=0;t2=Math.max(0,Math.min(1,t2));wP=100+t2*(cv.w-100);hP=100+t2*(cv.h-100);}
+            var p2=_parsePos(_ePos);
+            var lP=(100-wP)*(p2.x/100);
+            var tP=(100-hP)*(p2.y/100);
+            _img.style.setProperty('position','absolute','important');
+            _img.style.setProperty('left',lP+'%','important');
+            _img.style.setProperty('top',tP+'%','important');
+            _img.style.setProperty('width',wP+'%','important');
+            _img.style.setProperty('height',hP+'%','important');
+            _img.style.setProperty('max-width','none','important');
+            _img.style.setProperty('max-height','none','important');
+            _img.style.setProperty('display','block','important');
+            _img.style.setProperty('object-fit',_eZoom<1?'fill':'cover','important');
+            _img.style.setProperty('transform','none','important');
+            _img.style.setProperty('margin','0','important');
+          }
+          if(_sW>0&&_sH>0){
+            var effZoom=(isFinite(mobileZoom)&&mobileZoom>0)?mobileZoom:(parseFloat(img.getAttribute('data-zappy-zoom'))||1);
+            var effPos=mobilePos||img.getAttribute('data-zappy-object-position')||img.style.objectPosition||'50% 50%';
+            w.style.setProperty('overflow','hidden','important');
+            w.style.setProperty('position','relative','important');
+            w.style.setProperty('width','100%','important');
+            w.style.setProperty('max-width','100%','important');
+            if(_sW>0&&_sH>0){w.style.setProperty('padding-bottom','0','important');w.style.setProperty('aspect-ratio',_sW+'/'+_sH,'important');w.style.setProperty('height','auto','important');}
+            _applyZoomCrop(img,w,effPos,effZoom);
+            if(!(img.complete&&img.naturalWidth>0)){
+              (function(_i,_w2,_p,_z){_i.addEventListener('load',function _ol(){_i.removeEventListener('load',_ol);try{_applyZoomCrop(_i,_w2,_p,_z);}catch(e){}});
+              })(img,w,effPos,effZoom);
+            }
+          }else{
+            if(!inConstrainedParent)w.style.setProperty('height','auto','important');
+            img.style.setProperty('position','relative','important');
+            img.style.setProperty('width','100%','important');
+            img.style.setProperty('height','auto','important');
+            img.style.setProperty('max-width','100%','important');
+            img.style.setProperty('max-height',inConstrainedParent?'none':'400px','important');
+            img.style.setProperty('object-fit','cover','important');
+            img.style.setProperty('left','0','important');
+            img.style.setProperty('top','0','important');
+            img.style.setProperty('transform','none','important');
+          }
+        });
+        document.querySelectorAll('img[data-zappy-mobile-src],img[data-zappy-mobile-object-position],img[data-zappy-mobile-zoom]').forEach(function(img){
+          var zw=img.closest('[data-zappy-zoom-wrapper="true"]');
+          if(zw&&!_isHeroBg(zw))return;
+          if(!img._zappyDesktop)img._zappyDesktop={src:img.getAttribute('src'),style:img.getAttribute('style')};
+          var mobileSrc=img.getAttribute('data-zappy-mobile-src');
+          var mobilePos=img.getAttribute('data-zappy-mobile-object-position');
+          var mobileZoom=parseFloat(img.getAttribute('data-zappy-mobile-zoom'));
+          if(mobileSrc)img.src=mobileSrc;
+          if(mobilePos)img.style.setProperty('object-position',mobilePos,'important');
+          if(mobileZoom>1){
+            img.style.setProperty('transform','scale('+mobileZoom+')','important');
+            img.style.setProperty('transform-origin',mobilePos||'50% 50%','important');
+            var p=img.parentElement;
+            if(p)p.style.setProperty('overflow','hidden','important');
+          }
+        });
+      }
+      function revertDesktop(){
+        if(!_applied)return;_applied=false;
+        document.querySelectorAll('[data-zappy-zoom-wrapper="true"]').forEach(function(w){
+          if(w._zappyDesktop&&w._zappyDesktop.wStyle!=null){w.setAttribute('style',w._zappyDesktop.wStyle);}
+          var img=w.querySelector('img');
+          if(img&&img._zappyDesktop){
+            if(img._zappyDesktop.src!=null)img.setAttribute('src',img._zappyDesktop.src);
+            if(img._zappyDesktop.style!=null)img.setAttribute('style',img._zappyDesktop.style);
+            else img.removeAttribute('style');
+          }
+        });
+        document.querySelectorAll('img[data-zappy-mobile-src],img[data-zappy-mobile-object-position],img[data-zappy-mobile-zoom]').forEach(function(img){
+          var zw=img.closest('[data-zappy-zoom-wrapper="true"]');
+          if(zw&&!_isHeroBg(zw))return;
+          if(img._zappyDesktop){
+            if(img._zappyDesktop.src!=null)img.setAttribute('src',img._zappyDesktop.src);
+            if(img._zappyDesktop.style!=null)img.setAttribute('style',img._zappyDesktop.style);
+            else img.removeAttribute('style');
+          }
+        });
+        _fixHeroBgWrappers();
+        fixDesktopWrappers();
+      }
+      function _fixHeroBgWrappers(){var isMob=window.innerWidth<=768;document.querySelectorAll('[data-zappy-zoom-wrapper="true"]').forEach(function(w){if(!_isHeroBg(w))return;w.style.setProperty('position','absolute','important');w.style.setProperty('top','0','important');w.style.setProperty('left','0','important');w.style.setProperty('width','100%','important');w.style.setProperty('height','100%','important');w.style.setProperty('max-width','none','important');w.style.setProperty('overflow','hidden','important');w.setAttribute('data-zappy-zoom-wrapper-width-mode','full');var img=w.querySelector('img');if(img){img.style.setProperty('width','100%','important');img.style.setProperty('height','100%','important');img.style.setProperty('object-fit','cover','important');img.style.setProperty('position','relative','important');img.style.setProperty('top','0','important');img.style.setProperty('left','0','important');img.style.setProperty('max-width','none','important');img.style.setProperty('max-height','none','important');img.style.setProperty('display','block','important');if(isMob){var mSrc=img.getAttribute('data-zappy-mobile-src');var mPos=img.getAttribute('data-zappy-mobile-object-position');var mZoom=parseFloat(img.getAttribute('data-zappy-mobile-zoom'));if(mSrc){if(!img._zappyDesktop)img._zappyDesktop={src:img.getAttribute('src'),style:img.getAttribute('style')};img.src=mSrc;}if(mPos)img.style.setProperty('object-position',mPos,'important');if(mZoom>1){img.style.setProperty('transform','scale('+mZoom+')','important');img.style.setProperty('transform-origin',mPos||'50% 50%','important');}}}});}
+      function init(){
+        _fixHeroBgWrappers();
+        var mq=window.matchMedia('(max-width:768px)');
+        function onChange(e){if(e.matches)applyMobile();else revertDesktop();}
+        if(mq.matches)applyMobile();
+        else fixDesktopWrappers();
+        try{mq.addEventListener('change',onChange);}catch(e){mq.addListener(onChange);}
+      }
+      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);
+      else setTimeout(init,50);
+    })();
+    </script>
+
+    <script>
+    (function(){
+      var _lastW=0;
+      function normalizeAttachedImageCarousel(c){
+        if(!c||!c.matches)return false;
+        // Unified editor carousels are owned by the injected carousel runtime — never re-normalize them here.
+        if(c.matches('[data-zappy-image-carousel]'))return true;
+        if(!c.matches('.zappy-img-carousel[data-zappy-hero-carousel]'))return false;
+        var tracks=c.querySelectorAll('.zappy-carousel-track');
+        tracks.forEach(function(track){Array.from(track.children).forEach(function(ch){c.appendChild(ch);});});
+        var wrappers=c.querySelectorAll('.zappy-carousel-container-wrapper');wrappers.forEach(function(w){w.remove();});
+        var oldBtns=c.querySelectorAll('.zappy-carousel-btn');oldBtns.forEach(function(b){b.remove();});
+        var oldDots=c.querySelectorAll('.zappy-carousel-dots');oldDots.forEach(function(d){d.remove();});
+        c.classList.remove('zappy-carousel-mode','zappy-carousel-active','zappy-carousel-js-init','zappy-carousel-container');
+        c.removeAttribute('data-zappy-display-mode');
+        var slides=Array.from(c.querySelectorAll(':scope > .zappy-img-carousel-slide'));
+        if(!slides.length)slides=Array.from(c.querySelectorAll('.zappy-img-carousel-slide'));
+        if(!slides.some(function(s){return s.classList.contains('is-active');})&&slides[0])slides[0].classList.add('is-active');
+        slides.forEach(function(slide){
+          if(slide.parentElement!==c)c.appendChild(slide);
+          slide.classList.remove('zappy-carousel-item');
+          slide.removeAttribute('data-index');
+          slide.style.removeProperty('flex');
+          slide.style.removeProperty('width');
+          slide.style.removeProperty('min-width');
+          slide.style.removeProperty('max-width');
+          slide.style.removeProperty('transform');
+          slide.style.removeProperty('transition');
+        });
+        c.style.setProperty('position','relative','important');
+        c.style.setProperty('overflow','hidden','important');
+        function syncAttachedSlides(){
+          Array.from(c.querySelectorAll(':scope > .zappy-img-carousel-slide')).forEach(function(slide){
+            var active=slide.classList.contains('is-active');
+            slide.style.setProperty('position',active?'relative':'absolute','important');
+            slide.style.setProperty('inset','0','important');
+            slide.style.setProperty('width','100%','important');
+            slide.style.setProperty('min-width','0','important');
+            slide.style.setProperty('max-width','none','important');
+            slide.style.setProperty('height',active?'auto':'100%','important');
+            slide.style.setProperty('opacity',active?'1':'0','important');
+            slide.style.setProperty('z-index',active?'1':'0','important');
+            var img=slide.querySelector('img');
+            if(img){img.style.setProperty('width','100%','important');img.style.setProperty('height','auto','important');img.style.setProperty('display','block','important');}
+          });
+        }
+        syncAttachedSlides();
+        if(!c.__zappyAttachedFadeObserver&&window.MutationObserver){
+          var obs=new MutationObserver(syncAttachedSlides);
+          Array.from(c.querySelectorAll(':scope > .zappy-img-carousel-slide')).forEach(function(slide){obs.observe(slide,{attributes:true,attributeFilter:['class']});});
+          c.__zappyAttachedFadeObserver=obs;
+        }
+        if(!c.__zappyAttachedFadeGuard){c.__zappyAttachedFadeGuard=setInterval(syncAttachedSlides,250);}
+        return true;
+      }
+      function initViewCarousels(){
+        document.querySelectorAll('.zappy-img-carousel[data-zappy-hero-carousel]').forEach(normalizeAttachedImageCarousel);
+        var containers=document.querySelectorAll('.zappy-carousel-mode, [data-zappy-display-mode="carousel"]');
+        containers.forEach(function(c){
+          if(normalizeAttachedImageCarousel(c))return;
+          var existingTrack=c.querySelector('.zappy-carousel-track');
+          var items=[];
+          if(existingTrack){
+            Array.from(existingTrack.children).forEach(function(ch){items.push(ch);});
+            items.forEach(function(it){c.appendChild(it);});
+            var oldWr=c.querySelector('.zappy-carousel-container-wrapper');if(oldWr)oldWr.remove();
+            var oldBtns=c.querySelectorAll('.zappy-carousel-btn');oldBtns.forEach(function(b){b.remove();});
+            var oldDots=c.querySelector('.zappy-carousel-dots');if(oldDots)oldDots.remove();
+            c.classList.remove('zappy-carousel-js-init');
+          } else {
+            Array.from(c.children).forEach(function(ch){
+              if(!ch||!ch.classList)return;
+              if(ch.tagName==='STYLE'||ch.tagName==='SCRIPT')return;
+              if(ch.classList.contains('zappy-carousel-btn')||ch.classList.contains('zappy-carousel-dots')||ch.classList.contains('zappy-carousel-container-wrapper'))return;
+              items.push(ch);
+            });
+          }
+          if(items.length===0)return;
+          var isRTL=window.getComputedStyle(c).direction==='rtl';
+          var gap=parseInt(c.getAttribute('data-original-gap'),10)||24;
+          var inlineW=items[0]?items[0].style.width:'';
+          var parsedInline=(inlineW&&inlineW!=='auto')?parseFloat(inlineW):0;
+          var firstR=(parsedInline>=100)?parsedInline:(items[0]?items[0].getBoundingClientRect().width:0);
+          var itemW=firstR>50?firstR:280;
+          var cW=c.offsetWidth||800;
+          var ipv=Math.min(3,items.length);
+          var vW=(ipv*itemW)+((ipv-1)*gap);
+          while(vW>cW-60&&ipv>1){ipv--;vW=(ipv*itemW)+((ipv-1)*gap);}
+          if(window.innerWidth<=768){ipv=1;vW=Math.min(itemW,cW-20);}
+          var wr=document.createElement('div');wr.className='zappy-carousel-container-wrapper';
+          wr.style.cssText='position:relative;overflow:hidden!important;width:'+vW+'px;max-width:calc(100% - 20px);margin:0 auto;';
+          var tr=document.createElement('div');tr.className='zappy-carousel-track';
+          tr.style.cssText='display:flex;transition:transform 0.3s ease;gap:'+gap+'px;';
+          items.forEach(function(it){
+            it.classList.add('zappy-carousel-item');
+            it.style.flex='0 0 '+itemW+'px';it.style.width=itemW+'px';it.style.minWidth=itemW+'px';it.style.maxWidth=itemW+'px';
+            var zw=it.querySelectorAll('[data-zappy-zoom-wrapper="true"]');
+            zw.forEach(function(z){z.style.setProperty('padding-bottom','0','important');z.style.setProperty('min-height','0','important');z.style.setProperty('overflow','hidden','important');var ar=parseFloat(z.getAttribute('data-zappy-zoom-aspect-ratio'));if(ar&&ar>0){z.style.setProperty('aspect-ratio',(1/ar)+'','important');z.style.setProperty('height','auto','important');}else{z.style.setProperty('height','auto','important');}var zi=z.querySelector('img');if(zi){zi.style.setProperty('position','relative','important');zi.style.setProperty('width','100%','important');zi.style.setProperty('height',(ar&&ar>0)?'100%':'auto','important');zi.style.setProperty('object-fit','cover','important');zi.style.setProperty('left','0','important');zi.style.setProperty('top','0','important');zi.style.setProperty('max-width','100%','important');}});
+            tr.appendChild(it);
+          });
+          wr.appendChild(tr);c.appendChild(wr);c.classList.add('zappy-carousel-js-init');c.style.display='block';c.style.position='relative';
+          var ci=0,ti=items.length,mx=Math.max(0,ti-ipv);
+          var bS=36,bSp=4;
+          var lb=document.createElement('button');lb.className='zappy-carousel-btn zappy-carousel-left';
+          lb.innerHTML=isRTL?'&#10095;':'&#10094;';
+          lb.style.cssText='position:absolute;top:50%;transform:translateY(-50%);left:'+bSp+'px;background:rgba(255,255,255,0.9);border:1px solid #e5e7eb;border-radius:50%;width:'+bS+'px;height:'+bS+'px;cursor:pointer;font-size:16px;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;';
+          var rb=document.createElement('button');rb.className='zappy-carousel-btn zappy-carousel-right';
+          rb.innerHTML=isRTL?'&#10094;':'&#10095;';
+          rb.style.cssText='position:absolute;top:50%;transform:translateY(-50%);right:'+bSp+'px;background:rgba(255,255,255,0.9);border:1px solid #e5e7eb;border-radius:50%;width:'+bS+'px;height:'+bS+'px;cursor:pointer;font-size:16px;z-index:10;box-shadow:0 2px 8px rgba(0,0,0,0.1);display:flex;align-items:center;justify-content:center;';
+          c.appendChild(lb);c.appendChild(rb);
+          var tp=Math.ceil(ti/ipv);var dc=null;
+          if(tp>1){dc=document.createElement('div');dc.className='zappy-carousel-dots';dc.style.cssText='display:flex;justify-content:center;gap:8px;margin-top:16px;';
+            for(var i=0;i<tp;i++){var d=document.createElement('button');d.className='zappy-carousel-dot'+(i===0?' active':'');d.setAttribute('data-index',i);d.style.cssText='width:10px;height:10px;border-radius:50%;border:none;cursor:pointer;background:'+(i===0?'#1a1a1a':'#d1d5db')+';transition:background 0.2s ease;';dc.appendChild(d);}
+            c.appendChild(dc);}
+          function actualW(){var r=items[0]?items[0].getBoundingClientRect().width:itemW;return r||itemW;}
+          function upd(){var aW=actualW();var off=ci*(aW+gap);tr.style.transform=isRTL?'translateX('+off+'px)':'translateX(-'+off+'px)';lb.style.opacity=(isRTL?(ci>=mx?'0.5':'1'):(ci===0?'0.5':'1'));rb.style.opacity=(isRTL?(ci===0?'0.5':'1'):(ci>=mx?'0.5':'1'));if(dc){var pg=Math.floor(ci/ipv);if(ci===mx&&mx>0)pg=tp-1;dc.querySelectorAll('.zappy-carousel-dot').forEach(function(dot,idx){dot.style.background=idx===pg?'#1a1a1a':'#d1d5db';dot.classList.toggle('active',idx===pg);});}}
+          lb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();if(isRTL){if(ci<mx){ci++;upd();}}else{if(ci>0){ci--;upd();}}});
+          rb.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();if(isRTL){if(ci>0){ci--;upd();}}else{if(ci<mx){ci++;upd();}}});
+          if(dc)dc.querySelectorAll('.zappy-carousel-dot').forEach(function(dot){dot.addEventListener('click',function(e){e.preventDefault();e.stopPropagation();ci=Math.min(mx,parseInt(dot.getAttribute('data-index'),10)*ipv);upd();});});
+          upd();
+        });
+      }
+      function onResize(){
+        var w=window.innerWidth;
+        if(Math.abs(w-_lastW)>100){_lastW=w;initViewCarousels();}
+      }
+      if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){_lastW=window.innerWidth;initViewCarousels();});
+      else{_lastW=window.innerWidth;setTimeout(initViewCarousels,100);}
+      var _resizeTimer;
+      window.addEventListener('resize',function(){clearTimeout(_resizeTimer);_resizeTimer=setTimeout(onResize,200);});
+    })();
+    </script>
+<script data-zappy-hero-carousel-js="true">(function(){
+  var V=6;
+  if((window.__zappyCarouselRuntimeVersion||0)>=V){
+    if(window.__zappyHeroCarouselInit)window.__zappyHeroCarouselInit(document);
+    return;
+  }
+  window.__zappyCarouselRuntimeVersion=V;
+  // Legacy inline copies (pre-versioning) guard on this boolean: setting it
+  // makes them skip their own body and delegate to our init instead.
+  window.__zappyHeroCarouselRuntimeLoaded=true;
+  var CONTAINER_SEL='[data-zappy-image-carousel],[data-zappy-hero-carousel]';
+  var SLIDE_SEL='.zappy-carousel-slide,.zappy-hero-carousel-slide,.zappy-img-carousel-slide';
+  function getSlides(c){
+    var direct=Array.prototype.filter.call(c.children,function(ch){
+      return ch.nodeType===1&&ch.matches&&ch.matches(SLIDE_SEL);
+    });
+    if(direct.length)return direct;
+    return Array.prototype.slice.call(c.querySelectorAll(SLIDE_SEL));
+  }
+  function cleanupSlideImages(slide){
+    if(!slide||!slide.querySelectorAll)return null;
+    var imgs=Array.prototype.slice.call(slide.querySelectorAll('img'));
+    if(!imgs.length)return null;
+    var canonical=slide.querySelector('img[data-element-id]')||imgs[0];
+    imgs.forEach(function(img){
+      if(img===canonical)return;
+      var parent=img.parentElement;
+      try{img.remove();}catch(e){try{if(img.parentNode)img.parentNode.removeChild(img);}catch(e2){}}
+      if(parent&&parent!==slide&&parent.getAttribute&&
+         parent.getAttribute('data-zappy-zoom-wrapper')==='true'&&!parent.querySelector('img')){
+        try{parent.remove();}catch(e3){}
+      }
+    });
+    return canonical;
+  }
+  function revealImageWhenDecoded(img){
+    if(!img||img.getAttribute('data-zappy-carousel-image-ready')==='true')return;
+    var token=(img.__zappyCarouselDecodeToken||0)+1;
+    img.__zappyCarouselDecodeToken=token;
+    function markReady(){
+      if(img.__zappyCarouselDecodeToken!==token)return;
+      img.setAttribute('data-zappy-carousel-image-ready','true');
+    }
+    function decode(){
+      if(img.decode){
+        img.decode().then(markReady,markReady);
+      }else{
+        markReady();
+      }
+    }
+    if(img.complete){
+      if(img.naturalWidth>0)decode();
+      else markReady();
+      return;
+    }
+    img.addEventListener('load',decode,{once:true});
+    img.addEventListener('error',markReady,{once:true});
+  }
+  function activeIndexOf(slides){
+    for(var i=0;i<slides.length;i++){
+      if(slides[i].classList.contains('is-active'))return i;
+    }
+    return 0;
+  }
+  function applyResponsiveImages(c){
+    if(!c)return;
+    var mobile=window.matchMedia('(max-width:768px)').matches;
+    getSlides(c).forEach(function(slide){
+      var img=cleanupSlideImages(slide);
+      if(!img)return;
+      var mSrc=img.getAttribute('data-zappy-mobile-src');
+      var mPos=img.getAttribute('data-zappy-mobile-object-position');
+      var desktopPos=img.getAttribute('data-zappy-object-position')||'50% 50%';
+      if(mobile){
+        if(mSrc){
+          if(!img.getAttribute('data-zappy-original-src')){
+            var knownDesktop=(img._zappyDesktop&&img._zappyDesktop.src)||
+              img.getAttribute('data-zappy-desktop-src')||
+              img.getAttribute('src')||'';
+            img.setAttribute('data-zappy-original-src',knownDesktop);
+          }
+          if(img.getAttribute('src')!==mSrc){
+            img.removeAttribute('data-zappy-carousel-image-ready');
+            img.setAttribute('src',mSrc);
+          }
+        }
+        if(mPos)img.style.setProperty('object-position',mPos,'important');
+      }else{
+        var original=img.getAttribute('data-zappy-original-src')||
+          (img._zappyDesktop&&img._zappyDesktop.src)||
+          img.getAttribute('data-zappy-desktop-src');
+        if(original&&img.getAttribute('src')!==original){
+          img.removeAttribute('data-zappy-carousel-image-ready');
+          img.setAttribute('src',original);
+        }
+        img.removeAttribute('data-zappy-original-src');
+        img.style.setProperty('object-position',desktopPos,'important');
+      }
+      revealImageWhenDecoded(img);
+      var link=slide.querySelector&&slide.querySelector(':scope > a.zappy-carousel-slide-link');
+      if(link){
+        var desktopAction=link.getAttribute('data-zappy-desktop-click-action');
+        var desktopHref=link.getAttribute('data-zappy-desktop-href');
+        if(!desktopAction&&!desktopHref&&link.getAttribute('href')){
+          desktopHref=link.getAttribute('href');
+          desktopAction='link';
+          link.setAttribute('data-zappy-desktop-click-action','link');
+          link.setAttribute('data-zappy-desktop-href',desktopHref);
+          if(link.getAttribute('target')==='_blank')link.setAttribute('data-zappy-desktop-target','_blank');
+        }
+        var mobileAction=link.getAttribute('data-zappy-mobile-click-action');
+        var useMobileOverride=mobile&&(mobileAction==='link'||mobileAction==='none');
+        var href=useMobileOverride
+          ?(mobileAction==='link'?link.getAttribute('data-zappy-mobile-href'):'')
+          :(desktopAction==='none'?'':desktopHref);
+        var target=useMobileOverride
+          ?link.getAttribute('data-zappy-mobile-target')
+          :link.getAttribute('data-zappy-desktop-target');
+        if(href){
+          link.setAttribute('href',href);
+          link.setAttribute('data-zappy-click-action','link');
+          link.style.setProperty('pointer-events','auto');
+          if(target==='_blank'){
+            link.setAttribute('target','_blank');
+            link.setAttribute('rel','noopener noreferrer');
+          }else{
+            link.removeAttribute('target');
+            link.removeAttribute('rel');
+          }
+        }else{
+          link.removeAttribute('href');
+          link.removeAttribute('target');
+          link.removeAttribute('rel');
+          link.setAttribute('data-zappy-click-action','none');
+          link.style.setProperty('pointer-events','none');
+        }
+      }
+    });
+  }
+  function show(c,idx){
+    var slides=getSlides(c);
+    if(!slides.length)return;
+    if(idx<0)idx=0;
+    if(idx>=slides.length)idx=slides.length-1;
+    c.__zappyActiveIndex=idx;
+    slides.forEach(function(slide,i){
+      var active=i===idx;
+      slide.classList.toggle('is-active',active);
+      slide.style.setProperty('opacity',active?'1':'0','important');
+      // Only the active slide may receive clicks (per-slide links).
+      // Legacy bg-div hero slides sit under aria-hidden containers, so the
+      // pointer-events toggle is harmless there too.
+      slide.style.setProperty('pointer-events',active?'auto':'none','important');
+      slide.style.setProperty('z-index',active?'1':'0','important');
+    });
+  }
+  function isPaused(c){
+    if(c&&c.__zappyCarouselPaused)return true;
+    if(window.__zappyCarouselHoldAll)return true;
+    if(document.hidden)return true;
+    // Editor edit-mode: never auto-advance while the user is editing.
+    if(document.body&&document.body.classList&&document.body.classList.contains('zappy-edit-mode'))return true;
+    return false;
+  }
+  function stopTimer(c){
+    if(c.__zappyHeroCarouselTimer){
+      clearInterval(c.__zappyHeroCarouselTimer);
+      c.__zappyHeroCarouselTimer=null;
+    }
+  }
+  function startTimer(c){
+    stopTimer(c);
+    var iv=parseInt(c.getAttribute('data-interval'),10)||3000;
+    if(iv<500)iv=500;
+    c.__zappyHeroCarouselTimer=setInterval(function(){
+      if(!document.documentElement.contains(c)){stopTimer(c);return;}
+      if(isPaused(c))return;
+      var slides=getSlides(c);
+      if(slides.length<2)return;
+      var i=typeof c.__zappyActiveIndex==='number'?c.__zappyActiveIndex:activeIndexOf(slides);
+      show(c,(i+1)%slides.length);
+    },iv);
+  }
+  function initOne(c){
+    if(c.__zappyInit&&c.__zappyCarouselV6)return;
+    // Take over containers initialized by an OLD runtime copy.
+    if(c.__zappyInit&&!c.__zappyCarouselV6)stopTimer(c);
+    c.__zappyInit=true;
+    c.__zappyCarouselV6=true;
+    c.__zappyCarouselV5=true;
+    var slides=getSlides(c);
+    if(!slides.length)return;
+    applyResponsiveImages(c);
+    show(c,activeIndexOf(slides));
+    startTimer(c);
+  }
+  function init(root){
+    var scope=root&&root.querySelectorAll?root:document;
+    var seen=[];
+    scope.querySelectorAll(CONTAINER_SEL).forEach(function(c){
+      if(seen.indexOf(c)===-1){seen.push(c);initOne(c);}
+    });
+    if(scope!==document&&scope.matches&&scope.matches(CONTAINER_SEL))initOne(scope);
+  }
+  // ---- Editor control API ----
+  window.__zappyCarousel={
+    version:V,
+    init:init,
+    getSlides:getSlides,
+    applyResponsiveImages:applyResponsiveImages,
+    setActive:function(c,idx){if(!c)return;show(c,idx);},
+    pause:function(c){if(c)c.__zappyCarouselPaused=true;},
+    resume:function(c){if(c)c.__zappyCarouselPaused=false;},
+    refresh:function(c){
+      if(!c)return;
+      c.__zappyInit=false;c.__zappyCarouselV6=false;c.__zappyCarouselV5=false;
+      stopTimer(c);
+      initOne(c);
+    }
+  };
+  window.__zappyHeroCarouselInit=init;
+  function start(){init(document);}
+  if(document.readyState!=='loading'){start();}else{document.addEventListener('DOMContentLoaded',start);}
+  var responsiveMq=window.matchMedia('(max-width:768px)');
+  function refreshResponsiveImages(){
+    document.querySelectorAll(CONTAINER_SEL).forEach(applyResponsiveImages);
+  }
+  if(responsiveMq.addEventListener)responsiveMq.addEventListener('change',refreshResponsiveImages);
+  else if(responsiveMq.addListener)responsiveMq.addListener(refreshResponsiveImages);
+  if(window.MutationObserver&&!window.__zappyHeroCarouselObserver){
+    var observer=new MutationObserver(function(records){
+      records.forEach(function(record){
+        Array.prototype.slice.call(record.addedNodes||[]).forEach(function(node){
+          if(!node||node.nodeType!==1)return;
+          if(node.matches&&node.matches(CONTAINER_SEL)){init(node.parentNode||document);}
+          else if(node.querySelector&&node.querySelector(CONTAINER_SEL)){init(node);}
+        });
+      });
+    });
+    function observe(){if(document.body)observer.observe(document.body,{childList:true,subtree:true});}
+    window.__zappyHeroCarouselObserver=observer;
+    if(document.readyState!=='loading'){observe();}else{document.addEventListener('DOMContentLoaded',observe);}
+  }
+})();</script></body></html>
