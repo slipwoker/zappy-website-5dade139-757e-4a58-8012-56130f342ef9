@@ -342,7 +342,7 @@ Happily created by Zappy
 
 
 
-נוצר באמצעותZappy
+נוצר באמצעות Zappy
 
 ---
 
@@ -617,8 +617,6 @@ Happily created by Zappy
 
 
 # אודות גרמי הנדסה - הנדסה עם אימפקט
-
-### הכר את גיא והערכים שמניעים אותנו
 
 
 
